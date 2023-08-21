@@ -12,3 +12,7 @@ getAnagrams s l = filter (\y -> isAnagram y s) l
 
 groupAnagrams :: [String] -> [[String]]
 groupAnagrams l = nub (map (\e -> getAnagrams e l) l)
+
+subsets :: [a] -> [[a]]
+subsets [x] = [[],[x]]
+subsets (x:xs) = (subsets xs ++ map (x:) (subsets xs))
