@@ -1,0 +1,46 @@
+### Haskell ###
+dist/
+dist-newstyle/
+cabal-dev/
+*.o
+*.hi
+*.chi
+*.chs.h
+*.dyn_o
+*.dyn_hi
+*.prof
+*.aux
+*.hp
+*.eventlog
+.stack-work/
+cabal.sandbox.config
+cabal.config
+cabal.project.local
+
+### Stack ###
+.stack-work/
+
+### IDE/Editor specific ###
+# VS Code
+.vscode/
+# IntelliJ + Haskell Plugin
+.idea/
+# Vim
+*.swp
+# Emacs
+*~
+\#*\#
+.\#*
+*.elc
+*.beam
+
+### OS-specific ###
+# Linux
+*~
+# Windows
+Thumbs.db
+Desktop.ini
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
