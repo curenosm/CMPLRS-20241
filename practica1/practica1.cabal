@@ -1,0 +1,10 @@
+name:                practica1
+version:             0.1.0.0
+build-type:          Simple
+cabal-version:       >=1.10
+
+executable runtests
+  main-is:             test.hs
+  build-depends:       base, HUnit
+  hs-source-dirs:      .
+  default-language:    Haskell2010
