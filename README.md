@@ -8,9 +8,14 @@ NOTA: tienes que estar dentro practica1/ para ejecutar las pruebas
 cd practica1/
 ```
 
-abrir contenedor de haskell en bash  
+abrir contenedor de haskell en bash, desde linux:
 ```bash
 docker run -it --rm -v $(pwd):/app -w /app haskell:9 /bin/bash
+```
+
+o bien, desde windows (powershell)
+```powershell
+docker run -it --rm -v ${DIR}:/app -w /app haskell:9 /bin/bash
 ```
 
 una vez dentro del contenedor así se pueden ejecutar las pruebas
