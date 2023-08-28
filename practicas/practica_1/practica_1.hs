@@ -16,6 +16,11 @@ majorityElem [2 ,2 ,1 ,1 ,1 ,2 ,2]
 
 coins :: [Int] -> Int -> Bool
 coins [] n = n == 0
+coins (x:xs) n
+  | n > 0 = coins (x:xs) (n - x) || coins xs (n - x) || coins xs n
+  | n < 0 = False
+  | n == 0 = True
+
 coins [2 ,5] 8
 coins [2 ,4 ,6] 21
 
