@@ -42,3 +42,13 @@ majorityElem :: Eq a => [a] -> a
 majorityElem [] = error "Empty list"
 majorityElem [x] = x
 majorityElem (x:xs) = majorityTail xs x 1
+
+
+-- Ejercicio 4
+coins :: [Int] -> Int -> Bool
+coins [] n = n == 0
+coins (x:xs) n
+  | n > 0 = coins (x:xs) (n - x) || coins xs (n - x) || coins xs n
+  | n < 0 = False
+  | n == 0 = True
+
