@@ -10,7 +10,6 @@ fibonacci 1 = 1
 fibonacci n = fibonacci (n-1) + fibonacci (n-2)
 
 
-
 -- Ejercicio 1 y funciones auxiliares
 charsSet :: String -> Set.Set Char
 charsSet word = Set.fromList word
