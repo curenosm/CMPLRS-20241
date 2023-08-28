@@ -44,6 +44,7 @@ majorityElem [] = error "Empty list"
 majorityElem [x] = x
 majorityElem (x:xs) = majorityTail xs x 1
 
+
 -- Ejercicio 4
 coins :: [Int] -> Int -> Bool
 coins [] n = n == 0
