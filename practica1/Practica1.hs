@@ -52,3 +52,21 @@ coins (x:xs) n
   | n < 0 = False
   | n == 0 = True
 
+
+data BST a = Empty | Node a (BST a) (BST a) deriving Show
+
+
+
+
+-- Ejercicio 6
+
+elemsInTree :: BST a -> Int
+elemsInTree Empty = 0
+elemsInTree (Node _ left right) = 1 + elemsInTree right + elemsInTree left
+
+kthElem :: BST a -> Int -> a
+kthElem Empty _ = error "No hay tal elemento"
+kthElem (Node value left right) n
+    | n <= (elemsInTree left) = (kthElem left n)
+    | n == ((elemsInTree left) + 1) = value
+    | otherwise = (kthElem right (n - ((elemsInTree left + (elemsInTree right)))))
