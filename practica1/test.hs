@@ -1,4 +1,4 @@
-import Practica1 (fibonacci, groupAnagrams, subsets, majorityElem, coins)
+import Practica1 (fibonacci, groupAnagrams, subsets, majorityElem, coins, isBST, BST(Node, Empty))
 import Test.HUnit
 import Data.List
 
@@ -63,21 +63,21 @@ test_coins_5 = TestCase (assertEqual "coins [5,10,20] 35"
   True 
   (coins [5,10,20] 35))  -- Possible with [5,10,20]
 
--- test_isBST_1 = TestCase (assertEqual "isBST (Node 3 (Node 1 Empty (Node 2 Empty Empty)) (Node 4 Empty Empty))" 
---     True 
---     (isBST (Node 3 (Node 1 Empty (Node 2 Empty Empty)) (Node 4 Empty Empty))))
+test_isBST_1 = TestCase (assertEqual "isBST (Node 3 (Node 1 Empty (Node 2 Empty Empty)) (Node 4 Empty Empty))"
+    True
+    (isBST (Node 3 (Node 1 Empty (Node 2 Empty Empty)) (Node 4 Empty Empty))))
 
--- test_isBST_2 = TestCase (assertEqual "isBST (Node 3 (Node 1 Empty (Node 3 Empty Empty)) (Node 4 Empty Empty))" 
---     False 
---     (isBST (Node 3 (Node 1 Empty (Node 3 Empty Empty)) (Node 4 Empty Empty))))
+test_isBST_2 = TestCase (assertEqual "isBST (Node 3 (Node 1 Empty (Node 3 Empty Empty)) (Node 4 Empty Empty))"
+    False
+    (isBST (Node 3 (Node 1 Empty (Node 3 Empty Empty)) (Node 4 Empty Empty))))
 
--- test_isBST_3 = TestCase (assertEqual "isBST Empty" 
---     True 
---     (isBST Empty))  -- An empty tree should be considered a valid BST.
+test_isBST_3 = TestCase (assertEqual "isBST Empty"
+    True
+    (isBST Empty))  -- An empty tree should be considered a valid BST.
 
--- test_isBST_4 = TestCase (assertEqual "isBST (Node 2 (Node 1 Empty Empty) (Node 3 Empty Empty))" 
---     True 
---     (isBST (Node 2 (Node 1 Empty Empty) (Node 3 Empty Empty))))  -- Straight forward valid BST.
+test_isBST_4 = TestCase (assertEqual "isBST (Node 2 (Node 1 Empty Empty) (Node 3 Empty Empty))"
+    True
+    (isBST (Node 2 (Node 1 Empty Empty) (Node 3 Empty Empty))))  -- Straight forward valid BST.
 
 
 -- test_kthElem_1 = TestCase (assertEqual 
