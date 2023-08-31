@@ -10,7 +10,7 @@ fibonacci 1 = 1
 fibonacci n = fibonacci (n-1) + fibonacci (n-2)
 
 
--- Ejercicio 1 y funciones auxiliares
+-- Ejercicio 1
 charsSet :: String -> Set.Set Char
 charsSet word = Set.fromList word
 
@@ -52,8 +52,8 @@ coins (x:xs) n
   | n < 0 = False
   | n == 0 = True
 
--- Ejercicio 5
 
+-- Ejercicio 5
 data BST a = Empty | Node a (BST a) (BST a) deriving Show
 
 allLessThan :: Int -> BST Int -> Bool
@@ -68,3 +68,15 @@ isBST :: BST Int -> Bool
 isBST Empty = True
 isBST (Node n l r) = allLessThan n l && allGreaterThan n r && isBST l && isBST r
 
+
+-- Ejercicio 6
+elemsInTree :: BST a -> Int
+elemsInTree Empty = 0
+elemsInTree (Node _ left right) = 1 + elemsInTree right + elemsInTree left
+
+kthElem :: BST a -> Int -> a
+kthElem Empty _ = error "No hay tal elemento"
+kthElem (Node value left right) n
+    | n <= (elemsInTree left) = (kthElem left n)
+    | n == ((elemsInTree left) + 1) = value
+    | otherwise = (kthElem right (n - ((elemsInTree left + (elemsInTree right)))))
