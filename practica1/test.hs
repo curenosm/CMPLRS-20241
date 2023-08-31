@@ -1,4 +1,4 @@
-import Practica1 (fibonacci, groupAnagrams, subsets, majorityElem, coins, isBST, BST(Node, Empty))
+import Practica1 (fibonacci, groupAnagrams, subsets, majorityElem, coins, isBST, BST(Node, Empty), kthElem)
 import Test.HUnit
 import Data.List
 
@@ -80,26 +80,26 @@ test_isBST_4 = TestCase (assertEqual "isBST (Node 2 (Node 1 Empty Empty) (Node 3
     (isBST (Node 2 (Node 1 Empty Empty) (Node 3 Empty Empty))))  -- Straight forward valid BST.
 
 
--- test_kthElem_1 = TestCase (assertEqual 
---     "kthElem (Node 3 (Node 1 Empty (Node 2 Empty Empty)) (Node 4 Empty Empty)) 2" 
---     2 
---     (kthElem (Node 3 (Node 1 Empty (Node 2 Empty Empty)) (Node 4 Empty Empty)) 2))
+test_kthElem_1 = TestCase (assertEqual 
+    "kthElem (Node 3 (Node 1 Empty (Node 2 Empty Empty)) (Node 4 Empty Empty)) 2" 
+    2 
+    (kthElem (Node 3 (Node 1 Empty (Node 2 Empty Empty)) (Node 4 Empty Empty)) 2))
 
--- test_kthElem_2 = TestCase (assertEqual 
---     "kthElem (Node 5 (Node 3 (Node 2 (Node 1 Empty Empty) Empty) (Node 4 Empty Empty)) (Node 6 Empty Empty)) 4" 
---     4 
---     (kthElem (Node 5 (Node 3 (Node 2 (Node 1 Empty Empty) Empty) (Node 4 Empty Empty)) (Node 6 Empty Empty)) 4))
+test_kthElem_2 = TestCase (assertEqual 
+    "kthElem (Node 5 (Node 3 (Node 2 (Node 1 Empty Empty) Empty) (Node 4 Empty Empty)) (Node 6 Empty Empty)) 4" 
+    4 
+    (kthElem (Node 5 (Node 3 (Node 2 (Node 1 Empty Empty) Empty) (Node 4 Empty Empty)) (Node 6 Empty Empty)) 4))
 
--- test_kthElem_3 = TestCase (assertEqual 
---     "kthElem (Node 1 Empty Empty) 1" 
---     1 
---     (kthElem (Node 1 Empty Empty) 1))  -- A single node tree.
+test_kthElem_3 = TestCase (assertEqual 
+    "kthElem (Node 1 Empty Empty) 1" 
+    1 
+    (kthElem (Node 1 Empty Empty) 1))  -- A single node tree.
 
--- test_kthElem_4 = TestCase (assertEqual 
---     "kthElem (Node 2 (Node 1 Empty Empty) (Node 3 Empty (Node 4 Empty Empty))) 4" 
---     4 
---     (kthElem (Node 2 (Node 1 Empty Empty) (Node 3 Empty (Node 4 Empty Empty))) 4))  -- Last element of a 4 node tree.
+test_kthElem_4 = TestCase (assertEqual 
+    "kthElem (Node 2 (Node 1 Empty Empty) (Node 3 Empty (Node 4 Empty Empty))) 4" 
+    4 
+    (kthElem (Node 2 (Node 1 Empty Empty) (Node 3 Empty (Node 4 Empty Empty))) 4))  -- Last element of a 4 node tree.
 
-tests = TestList [test_anagrams_1, test_majority_1, test_majority_2, test_majority_3, test_majority_4, test_majority_5, test_groupAnagrams_1, test_groupAnagrams_2, test_subsets_1, test_subsets_2, test_subsets_3, test_subsets_4, test_subsets_5, test_coins_1,test_coins_2,test_coins_3,test_coins_4,test_coins_5, test_isBST_1, test_isBST_2, test_isBST_3, test_isBST_4]
+tests = TestList [test_anagrams_1, test_majority_1, test_majority_2, test_majority_3, test_majority_4, test_majority_5, test_groupAnagrams_1, test_groupAnagrams_2, test_subsets_1, test_subsets_2, test_subsets_3, test_subsets_4, test_subsets_5, test_coins_1,test_coins_2,test_coins_3,test_coins_4,test_coins_5, test_isBST_1, test_isBST_2, test_isBST_3, test_isBST_4, test_kthElem_1, test_kthElem_2, test_kthElem_3, test_kthElem_4]
 
 main = runTestTT tests
