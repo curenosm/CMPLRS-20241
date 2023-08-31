@@ -26,6 +26,7 @@ groupAnagrams l = nub (map (\e -> getAnagrams e l) l)
 
 -- Ejercicio 2
 subsets :: [a] -> [[a]]
+subsets [] = [[]]
 subsets [x] = [[],[x]]
 subsets (x:xs) = (subsets xs ++ map (x:) (subsets xs))
 
