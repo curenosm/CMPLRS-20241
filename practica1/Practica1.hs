@@ -10,7 +10,7 @@ fibonacci 1 = 1
 fibonacci n = fibonacci (n-1) + fibonacci (n-2)
 
 
--- Ejercicio 1 y funciones auxiliares
+-- Ejercicio 1
 charsSet :: String -> Set.Set Char
 charsSet word = Set.fromList word
 
@@ -53,13 +53,23 @@ coins (x:xs) n
   | n == 0 = True
 
 
+-- Ejercicio 5
 data BST a = Empty | Node a (BST a) (BST a) deriving Show
 
+allLessThan :: Int -> BST Int -> Bool
+allLessThan _ Empty = True
+allLessThan root (Node v l r) = v < root && allLessThan root l && allLessThan root r
 
+allGreaterThan :: Int -> BST Int -> Bool
+allGreaterThan _ Empty = True
+allGreaterThan root (Node v l r) = v > root && allGreaterThan root l && allGreaterThan root r
+
+isBST :: BST Int -> Bool
+isBST Empty = True
+isBST (Node n l r) = allLessThan n l && allGreaterThan n r && isBST l && isBST r
 
 
 -- Ejercicio 6
-
 elemsInTree :: BST a -> Int
 elemsInTree Empty = 0
 elemsInTree (Node _ left right) = 1 + elemsInTree right + elemsInTree left
