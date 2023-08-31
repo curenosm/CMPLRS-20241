@@ -79,4 +79,4 @@ kthElem Empty _ = error "No hay tal elemento"
 kthElem (Node value left right) n
     | n <= (elemsInTree left) = (kthElem left n)
     | n == ((elemsInTree left) + 1) = value
-    | otherwise = (kthElem right (n - ((elemsInTree left + (elemsInTree right)))))
+    | otherwise = (kthElem right (n - elemsInTree left - 1 ))
