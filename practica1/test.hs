@@ -1,4 +1,4 @@
-import Practica1 (fibonacci, groupAnagrams, subsets, majorityElem, coins, isBST, BST(Node, Empty), kthElem)
+import Practica1 (groupAnagrams, subsets, majorityElem, coins, isBST, BST(Node, Empty), kthElem)
 import Test.HUnit
 import Data.List
 

@@ -1,13 +1,10 @@
+-- Datos del equipo:
+-- 418002485 Cureño Sanchez Misael
+
 module Practica1 where
 
 import qualified Data.Set as Set
 import Data.List (nub)
-
-
-fibonacci :: Int -> Int
-fibonacci 0 = 0
-fibonacci 1 = 1
-fibonacci n = fibonacci (n-1) + fibonacci (n-2)
 
 
 -- Ejercicio 1
