@@ -1,0 +1,60 @@
+name: Haskell CI
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+permissions:
+  contents: read
+
+jobs:
+  
+  build:
+    strategy:
+        matrix:
+          os: [ubuntu-latest]
+          ghc-version: ['8.10.3']
+          cabal-version: ['3.2']
+          project: [practica-1, practica-2]
+          include:
+            - project: practica-1
+          exclude:
+            - project: practica-2
+        fail-fast: true # If one fails all others will cancel
+      
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-haskell@v1
+      with:
+        ghc-version: ${{ matrix.ghc-version }}
+        cabal-version: ${{ matrix.cabal-version }}
+
+    - name: Cache
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-cabal
+      with:
+        path: ~/.cabal
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - name: Switch to project module
+      run: |
+        cd ${{ matrix.projects }}
+    - name: Install dependencies
+      run: |
+        cabal update
+        cabal build --only-dependencies --enable-tests --enable-benchmarks
+    - name: Build
+      run: cabal build --enable-tests --enable-benchmarks all
+    - name: Run runtests
+      run: cabal run runtests
+    - name: Run tests
+      run: cabal test all
+      continue-on-error: true
