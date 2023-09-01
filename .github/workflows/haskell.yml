@@ -17,7 +17,7 @@ jobs:
           os: [ubuntu-latest]
           ghc-version: ['8.10.3']
           cabal-version: ['3.2']
-          project: [practica-1, practica-2]
+          project: [practica1, practica2]
           include:
             - project: practica-1
           exclude:
