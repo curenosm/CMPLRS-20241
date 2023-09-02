@@ -1,12 +1,10 @@
--- Práctica 1
 -- Datos del equipo:
 -- 418002485 Cureño Sanchez Misael
 -- 318224187 Bernal Núñez Raúl
 -- 316641902 García Luna Bobadilla Uriel
 -- 419002237 Jardón Cárdenas Juan Diego
 
-
-module BernalNuñezRaul where
+module Practica1 where
 
 import qualified Data.Set as Set
 import Data.List (nub)
