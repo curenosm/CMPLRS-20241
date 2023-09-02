@@ -4,26 +4,54 @@
 
 module Practica2 where
 
-import qualified Data.Set as Set
+import Data.Char
 import Data.List (nub)
 
 
-data Token = Var String | Number Int | Boolean Bool | Sum | Subs | And | Or | Equal deriving Show
+data Token = Var String 
+  | Number Int 
+  | Boolean Bool 
+  | Sum 
+  | Subs 
+  | And 
+  | Or 
+  | Equal 
+  deriving (Show, Eq)
+
 
 -- Análisis léxico
 
 -- Ejercicio 1
+lexNum :: String -> [Token]
+lexNum cs = Number (read num) : lexer rest
+      where (num,rest) = span isDigit cs
+
+lexAlph :: String -> [Token]
+lexAlph cs = Var var : lexer rest
+      where (var,rest) = span isAlpha cs
+
 lexer :: String -> [Token]
-lexer _ = []
--- lexer "22 3 + var == t &&"
--- lexer "22 + var var f t == &&"
-
-
+lexer "" = []
+lexer (' ':xs) = lexer xs
+lexer ('+':xs) = Sum:(lexer xs)
+lexer ('-':xs) = Subs:(lexer xs)
+lexer ('&':'&':xs) = And:(lexer xs)
+lexer ('|':'|':xs) = Or:(lexer xs)
+lexer ('=':'=':xs) = Equal:(lexer xs)
+lexer (x:xs)
+  | isDigit x = lexNum (x:xs)
+  | isAlpha x = lexAlph (x:xs)
+  
 
 
 -- Análisis sintáctico
 
-data ASA = VarASA String | NumberASA Int | BooleanASA Bool | Op Token ASA ASA deriving Show
+data ASA = VarASA String 
+  | NumberASA Int
+  | BooleanASA Bool
+  | Op Token ASA ASA
+  deriving Show
+
 type Stack = [ASA]
 
 -- Ejercicio 2
