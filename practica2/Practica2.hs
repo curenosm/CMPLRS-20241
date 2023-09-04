@@ -45,26 +45,48 @@ lexer (x:xs)
 
 
 -- Análisis sintáctico
-
 data ASA = VarASA String 
   | NumberASA Int
   | BooleanASA Bool
   | Op Token ASA ASA
-  deriving Show
+  deriving (Show, Eq)
 
 type Stack = [ASA]
 
 -- Ejercicio 2
 scannerAux :: [Token] -> Stack -> ASA
-scannerAux _ stack = VarASA "var"
--- scannerAux [Nunber 22, Number 3, Sum 3,Sum, Var "var", Equal, Boolean True, And] []
--- scannerAux [Number 22, Sum, Var "var", Var "var", Boolean False, Boolean True, Equals, And] [] -- Expresion mal formada
+scannerAux [] [x] = x
+scannerAux [x] [] = case x of
+  Var     v -> VarASA v
+  Number  n -> NumberASA n
+  Boolean b -> BooleanASA b
+scannerAux (x:xs) [] = case x of
+  Var     v -> scannerAux xs [(VarASA      v)]
+  Number  n -> scannerAux xs [(NumberASA   n)]
+  Boolean b -> scannerAux xs [(BooleanASA  b)]
+scannerAux [] _ = error "Error de sintaxis"
+scannerAux [x] (top:bottom) = case x of
+  Var     v -> VarASA v
+  Number  n -> NumberASA n
+  Boolean b -> BooleanASA b
+  Sum  -> Op Sum    top (head bottom)
+  Subs -> Op Subs   top (head bottom)
+  And  -> Op And    top (head bottom)
+  Or   -> Op Or     top (head bottom)
+  Equal-> Op Equal  top (head bottom)
+scannerAux (x:xs) (top:bottom) = case x of
+  Var     v -> scannerAux xs (VarASA      v:(top:bottom))
+  Number  n -> scannerAux xs (NumberASA   n:(top:bottom))
+  Boolean b -> scannerAux xs (BooleanASA  b:(top:bottom))
+  Sum       -> scannerAux xs (Op Sum    top (head bottom):(drop 1 bottom))
+  Subs      -> scannerAux xs (Op Subs   top (head bottom):(drop 1 bottom))
+  And       -> scannerAux xs (Op And    top (head bottom):(drop 1 bottom))
+  Or        -> scannerAux xs (Op Or     top (head bottom):(drop 1 bottom))
+  Equal     -> scannerAux xs (Op Equal  top (head bottom):(drop 1 bottom))
 
 
 scanner :: [Token] -> ASA
-scanner _ = VarASA "var"
--- scanner [Number 22, Number 3, Sum, Var "var", Equal, Boolean True, And]
--- scanner [Number 22, Sum, Var "var", Var "var", Boolean False, Boolean True, Equal, And] -- Expresión mal formada
+scanner tokens = scannerAux tokens []
 
 
 
