@@ -1,7 +1,8 @@
 -- Datos del equipo:
 -- 418002485 Cureño Sanchez Misael
 -- 318224187 Bernal Núñez Raúl
--- 316641902 Uriel García Luna Bobadilla
+-- 316641902 García Luna Bobadilla Uriel
+-- 419002237 Jardón Cárdenas Juan Diego
 
 module Practica1 where
 
