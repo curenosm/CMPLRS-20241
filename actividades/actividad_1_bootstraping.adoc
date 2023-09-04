@@ -1,0 +1,11 @@
+= Actividad Complementaria
+
+// Fecha limite de entrega 6-sept
+
+== Ejercicio
+
+Escribir un ensayo sobre los siguientes puntos:
+
+1. Describir en qué consiste la técnica de bootstraping.
+2. Buscar un ejemplo de compilador actual que aplique esta técnica.
+3. Describir cómo aprovechar bootstraping para lograr un compilador portable.

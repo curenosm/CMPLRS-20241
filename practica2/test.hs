@@ -1,4 +1,4 @@
-import Practica2(lexer, Token(Number,Sum,Var,Equal,And), ASA(Op, VarASA, NumberASA, BooleanASA), Stack, scanner)
+import Practica2(lexer, Token(Number,Sum,Var,Equal,And), ASA(Op, VarASA, NumberASA, BooleanASA), Stack, scanner, fresh)
 import Test.HUnit
 import Data.List
 
@@ -20,6 +20,11 @@ test_scanner_2 = TestCase (assertEqual "scanner '2 2 + 2 =='"
     (scanner (lexer "2 2 + 2 =="))
     (Op Equal (NumberASA 2) (Op Sum (NumberASA 2) (NumberASA 2))))
 
-tests = TestList [test_1, test_lexer_1, test_lexer_2, test_scanner_1, test_scanner_2]
+test_fresh_1 = TestCase (assertEqual "fresh [1, 2, 3]" (fresh [1, 2, 3]) 0)
+
+test_fresh_2 = TestCase (assertEqual "fresh [4, 2, 3, 0]" (fresh [4, 2, 3, 0]) 1)
+
+
+tests = TestList [test_1, test_lexer_1, test_lexer_2, test_scanner_1, test_scanner_2, test_fresh_1, test_fresh_2]
 
 main = runTestTT tests

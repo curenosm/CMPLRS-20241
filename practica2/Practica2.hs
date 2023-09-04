@@ -99,6 +99,7 @@ data Type = Num | Bool deriving Show
 -- Ejercicio 3
 typeCheckerAux :: ASA -> Type
 typeCheckerAux _ = Num
+
 -- typeCheckerAux (Op And (BooleanASA True) (Op Equal (VarASA "var") (Op Sum (NumberASA 3) (NumberASA 22)))) -- Bool
 -- typeCheckerAux (Op And (NumberASA 43) (Op Equal (VarASA "var") (Op Sum (NumberASA 3) (NumberASA 22)))) 
 -- El tipo de los argumentos NumberASA 43 y Op Equal ( VarASA " var " ) 
@@ -108,6 +109,7 @@ typeCheckerAux _ = Num
 -- Ejercicio 4
 typeChecker :: ASA -> ASA
 typeChecker _ = VarASA "var"
+
 -- typeChecker (Op And (BooleanASA True) (Op Equal (VarASA "var") (Op Sum (NumberASA 3) (NumberASA 22)))) -- Devuelve el ASA si el tipado es consistente
 
 
@@ -140,9 +142,11 @@ instance Show ThreeAddress
 
 -- Ejercicio 6
 fresh :: [Int] -> Int
-fresh _ = 0
--- fresh [1, 2, 3] -- 0
--- fresh [4, 2, 3, 0] -- 1
+fresh l = helper [0..maximum l] l
+  where
+    helper :: [Int] -> [Int] -> Int
+    helper range [] = (maximum range) + 1
+    helper (x:xs) l = if not (x `elem` l) then x else helper xs l
 
 
 -- Ejercicio 7
