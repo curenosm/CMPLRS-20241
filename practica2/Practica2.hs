@@ -93,12 +93,21 @@ scanner tokens = scannerAux tokens []
 
 
 -- Análisis semántico
-data Type = Num | Bool deriving Show
+data Type = Num | Bool deriving (Show, Eq)
 
 
 -- Ejercicio 3
 typeCheckerAux :: ASA -> Type
-typeCheckerAux _ = Num
+typeCheckerAux (VarASA var) = Num
+typeCheckerAux (NumberASA n) = Num
+typeCheckerAux (BooleanASA b) = Bool
+typeCheckerAux (Op t l r) = let 
+	typeL = typeCheckerAux l
+	typeR = typeCheckerAux r in case t of
+	n | n == Sum || n == Subs || n == Equal -> if typeL == typeR && typeR == Num 
+		then Num else error "Something went wrong"
+	n | n == And || n == Or -> if typeL == typeR && typeR == Bool 
+		then Bool else error "Something went wrong"
 
 -- typeCheckerAux (Op And (BooleanASA True) (Op Equal (VarASA "var") (Op Sum (NumberASA 3) (NumberASA 22)))) -- Bool
 -- typeCheckerAux (Op And (NumberASA 43) (Op Equal (VarASA "var") (Op Sum (NumberASA 3) (NumberASA 22)))) 
@@ -108,7 +117,8 @@ typeCheckerAux _ = Num
 
 -- Ejercicio 4
 typeChecker :: ASA -> ASA
-typeChecker _ = VarASA "var"
+typeChecker asa = let t = typeCheckerAux asa in
+	if t == Num || t == Bool then asa else error "Error lanzado desde typeChecker"
 
 -- typeChecker (Op And (BooleanASA True) (Op Equal (VarASA "var") (Op Sum (NumberASA 3) (NumberASA 22)))) -- Devuelve el ASA si el tipado es consistente
 
