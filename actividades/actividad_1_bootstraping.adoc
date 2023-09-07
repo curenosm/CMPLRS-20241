@@ -1,11 +1,32 @@
-= Actividad Complementaria
+= Ensayo sobre boostraping
 
 // Fecha limite de entrega 6-sept
 
-== Ejercicio
+== Introducción
 
 Escribir un ensayo sobre los siguientes puntos:
 
-1. Describir en qué consiste la técnica de bootstraping.
-2. Buscar un ejemplo de compilador actual que aplique esta técnica.
-3. Describir cómo aprovechar bootstraping para lograr un compilador portable.
+=== Anecdota relacionada
+. Describir en qué consiste la técnica de bootstraping.
++
+En el contexto de los lenguajes
+de programación y los compiladores bootstraping, se refiere a la técnica mediante la cual creamos un compilador para un lenguaje de programación mediante la extensión de un compiladore ya existente para ese mismo lenguaje.
+
+=== Parrafo transicional
+
+
+== Desarrollo
+
+=== Opinion personal y defensa de la misma
+
+. Buscar un ejemplo de compilador actual que aplique esta técnica.
++
+Un claro ejemplo de lenguaje que aplica dicha técnica es el compilador de C, el cual fue escrito en C.
+
+. Describir cómo aprovechar bootstraping para lograr un compilador portable.
+
+== Conclusion
+
+=== Finalizar con pregunta abierta o reflexion impactante
+
+== Bibliografía

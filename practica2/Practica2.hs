@@ -125,14 +125,13 @@ typeChecker asa = let t = typeCheckerAux asa in
 
 
 
-
 -- Optimización de Código Fuente
 
 -- Ejercicio 5
 constantFolding :: ASA -> ASA
 constantFolding _ = VarASA "var"
 -- constantFolding (Op And (BooleanASA True) (Op Equal (VarASA "var") (Op Sum (NumberASA 3) (NumberASA 22))))
--- constantFolding (Op And (Op Equal (VarASA "var") (VarASA "var")) (Op Equal (VarASA "var") (Op Sum (VarASA "var") (NumberASA 22))))
+-- constantFolding (Op And (Op Equal (VarASA "var") (
 
 
 data Value = N Int | B Bool | S String 
