@@ -1,2 +1,4 @@
 .gitignore~
 *.un~
+.idea
+**/dist-newstyle
