@@ -1,6 +1,8 @@
 -- Datos del equipo:
 -- 418002485 Cureño Sanchez Misael
 -- 318224187 Bernal Núñez Raúl
+-- 316641902 García Luna Bobadilla Uriel
+-- 419002237 Jardón Cárdenas Juan Diego
 
 module Practica2 where
 
@@ -17,6 +19,9 @@ data Token = Var String
   | Or 
   | Equal 
   deriving (Show, Eq)
+
+
+
 
 
 -- Análisis léxico
@@ -41,7 +46,9 @@ lexer ('=':'=':xs) = Equal:(lexer xs)
 lexer (x:xs)
   | isDigit x = lexNum (x:xs)
   | isAlpha x = lexAlph (x:xs)
-  
+
+
+
 
 
 -- Análisis sintáctico
@@ -125,6 +132,7 @@ typeChecker asa = let t = typeCheckerAux asa in
 
 
 
+
 -- Optimización de Código Fuente
 
 -- Ejercicio 5
@@ -189,9 +197,12 @@ assembly _ = ""
 -- EQ "t2" "t0" "t1"
 
 
+
+
+
 -- Ejercicio Extra
 compile :: String -> String
-compile _ = ""
+compile = show . typeChecker . scanner . lexer
 
 -- compile "22 3 + var == t &&"
 -- MOV "t0" "var"
