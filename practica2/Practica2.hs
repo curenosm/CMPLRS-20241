@@ -58,35 +58,35 @@ scannerAux :: [Token] -> Stack -> ASA
 scannerAux [] [x] = x
 scannerAux [x] [] =
   case x of
-    Var v -> VarASA v
-    Number n -> NumberASA n
+    Var     v -> VarASA     v
+    Number  n -> NumberASA  n
     Boolean b -> BooleanASA b
 scannerAux (x:xs) [] =
   case x of
-    Var v -> scannerAux xs [(VarASA v)]
-    Number n -> scannerAux xs [(NumberASA n)]
+    Var     v -> scannerAux xs [(VarASA     v)]
+    Number  n -> scannerAux xs [(NumberASA  n)]
     Boolean b -> scannerAux xs [(BooleanASA b)]
 scannerAux [] _ = error "Error de sintaxis"
 scannerAux [x] (top:bottom) =
   case x of
-    Var v -> VarASA v
-    Number n -> NumberASA n
+    Var     v -> VarASA     v
+    Number  n -> NumberASA  n
     Boolean b -> BooleanASA b
-    Sum -> Op Sum top (head bottom)
-    Subs -> Op Subs top (head bottom)
-    And -> Op And top (head bottom)
-    Or -> Op Or top (head bottom)
-    Equal -> Op Equal top (head bottom)
+    Sum       -> Op Sum   top (head bottom)
+    Subs      -> Op Subs  top (head bottom)
+    And       -> Op And   top (head bottom)
+    Or        -> Op Or    top (head bottom)
+    Equal     -> Op Equal top (head bottom)
 scannerAux (x:xs) (top:bottom) =
   case x of
-    Var v -> scannerAux xs (VarASA v : (top : bottom))
-    Number n -> scannerAux xs (NumberASA n : (top : bottom))
-    Boolean b -> scannerAux xs (BooleanASA b : (top : bottom))
-    Sum -> scannerAux xs (Op Sum top (head bottom) : (drop 1 bottom))
-    Subs -> scannerAux xs (Op Subs top (head bottom) : (drop 1 bottom))
-    And -> scannerAux xs (Op And top (head bottom) : (drop 1 bottom))
-    Or -> scannerAux xs (Op Or top (head bottom) : (drop 1 bottom))
-    Equal -> scannerAux xs (Op Equal top (head bottom) : (drop 1 bottom))
+    Var     v -> scannerAux xs (VarASA      v : (top:bottom))
+    Number  n -> scannerAux xs (NumberASA   n : (top:bottom))
+    Boolean b -> scannerAux xs (BooleanASA  b : (top:bottom))
+    Sum       -> scannerAux xs (Op Sum   top (head bottom) : (drop 1 bottom))
+    Subs      -> scannerAux xs (Op Subs  top (head bottom) : (drop 1 bottom))
+    And       -> scannerAux xs (Op And   top (head bottom) : (drop 1 bottom))
+    Or        -> scannerAux xs (Op Or    top (head bottom) : (drop 1 bottom))
+    Equal     -> scannerAux xs (Op Equal top (head bottom) : (drop 1 bottom))
 
 scanner :: [Token] -> ASA
 scanner tokens = scannerAux tokens []
@@ -141,6 +141,7 @@ data Value
   = N Int
   | B Bool
   | S String
+  deriving (Eq)
 
 instance Show Value where
   show (N n) = show n
@@ -150,26 +151,42 @@ instance Show Value where
 data ThreeAddress
   = Assign String Value
   | Operation String String Token String
+  deriving (Eq)
 
 instance Show ThreeAddress where
   show (Assign t v) = show t ++ " = " ++ show v
   show (Operation t a op b) =
-    show t ++ " = " ++ show a ++ show t ++ show op ++ show b
+    show t ++ " = " ++ show a ++ tokenTreeAddress op ++ show b
+
+tokenTreeAddress :: Token -> String
+tokenTreeAddress t
+  | t == Sum  = "+"
+  | t == Subs = "-"
+  | t == And  = "&&"
+  | t == Or   = "||"
+  | t == Equal = "=="
+  | otherwise = error "Token not recognized"
 
 -- Ejercicio 6
 fresh :: [Int] -> Int
-fresh l = helper [0 .. maximum l] l
+fresh [] = 0
+fresh l = firstInRangeNotExistingInList [0 .. maximum l + 1] l
   where
-    helper :: [Int] -> [Int] -> Int
-    helper range [] = (maximum range) + 1
-    helper (x:xs) l =
+    firstInRangeNotExistingInList :: [Int] -> [Int] -> Int
+    firstInRangeNotExistingInList [last] l = last
+    firstInRangeNotExistingInList (x:xs) l =
       if not (x `elem` l)
         then x
-        else helper xs l
+        else firstInRangeNotExistingInList xs l
 
 -- Ejercicio 7
 threeAddressAux :: ASA -> [Int] -> ([ThreeAddress], String, [Int])
 threeAddressAux _ _ = ([], "t", [])
+
+threeAddress :: ASA -> [ThreeAddress]
+threeAddress program = dirs
+  where
+    (dirs, t, prev_ids) = threeAddressAux program []
 
 -- threeAddressAux (Op Equal (VarASA "var") (NumberASA 25)) []
 -- (["t0" = "var", "t1" = 25, "t2" = "t0" == "t1" ], "t2", [2, 1, 0])
@@ -190,8 +207,4 @@ assembly _ = ""
 -- EQ "t2" "t0" "t1"
 -- Ejercicio Extra
 compile :: String -> String
-compile = show . typeChecker . scanner . lexer
--- compile "22 3 + var == t &&"
--- MOV "t0" "var"
--- MOV "t1" 25
--- EQ "t2" "t0" "t1"
+compile = assembly . threeAddress . constantFolding . typeChecker . scanner . lexer
