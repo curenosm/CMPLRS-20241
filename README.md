@@ -2,7 +2,7 @@
 
 ## Comandos utiles
 
-NOTA: tienes que estar dentro practica1/ para ejecutar las pruebas 
+NOTA: tienes que estar dentro de cualquier practica para ejecutar las pruebas, por ejemplo:
 
 ```bash
 cd practica1/
@@ -15,7 +15,7 @@ docker run -it --rm -v $(pwd):/app -w /app haskell:9 /bin/bash
 
 o bien, desde windows (powershell)
 ```powershell
-docker run -it --rm -v ${DIR}:/app -w /app haskell:9 /bin/bash
+docker run -it --rm -v ${pwd}:/app -w /app haskell:9 /bin/bash
 ```
 
 una vez dentro del contenedor así se pueden ejecutar las pruebas
@@ -30,7 +30,7 @@ o en una sola linea
 cabal update && cabal build && cabal run runtests
 ```
 
-en un solo comando desde `practica1/`
+en un solo comando desde el directorio de la práctica, por ejemplo:
 ```bash
 docker run -it --rm -v $(pwd):/app -w /app haskell:9 /bin/bash -c "cabal update && cabal build && cabal run runtests"
 ```
