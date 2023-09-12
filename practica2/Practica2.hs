@@ -187,7 +187,6 @@ fresh l = firstInRangeNotExistingInList [0 .. maximum l + 1] l
         then x
         else firstInRangeNotExistingInList xs l
 
-
 -- Ejercicio 7
 threeAddressAux :: ASA -> [Int] -> ([ThreeAddress], String, [Int])
 threeAddressAux (VarASA v) past_ids = (dirs, temp, i:past_ids)
