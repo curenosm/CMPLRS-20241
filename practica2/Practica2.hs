@@ -118,9 +118,14 @@ typeCheckerAux (Op t l r) =
       typeR = typeCheckerAux r
    in case t of
         n
-          | n == Sum || n == Subs || n == Equal ->
+          | n == Sum || n == Subs ->
             if typeL == typeR && typeR == Num
               then Num
+              else error "Something went wrong"
+        n
+          | n == Equal ->
+            if typeL == typeR && typeR == Num
+              then Bool
               else error "Something went wrong"
         n
           | n == And || n == Or ->
@@ -172,8 +177,26 @@ tokenTreeAddress t
 
 -- Ejercicio 5
 constantFolding :: ASA -> ASA
-constantFolding asa = asa
-
+constantFolding (VarASA s) = VarASA s
+constantFolding (NumberASA n) = NumberASA n
+constantFolding (BooleanASA b) = BooleanASA b
+constantFolding op =
+  case op of
+    Op Sum (NumberASA n1) (NumberASA n2) -> NumberASA (n1 + n2)
+    Op Subs (NumberASA n1) (NumberASA n2) -> NumberASA (n1 - n2)
+    Op Or (BooleanASA True) _ -> BooleanASA True
+    Op Or _ (BooleanASA True) -> BooleanASA True
+    Op Or (BooleanASA False) (BooleanASA False) -> BooleanASA False
+    Op Or (BooleanASA False) e -> constantFolding e
+    Op Or e (BooleanASA False) -> constantFolding e
+    Op And (BooleanASA False) _ -> BooleanASA False
+    Op And _ (BooleanASA False) -> BooleanASA False
+    Op And (BooleanASA True) (BooleanASA True) -> BooleanASA True
+    Op And (BooleanASA True) e -> constantFolding e
+    Op And e (BooleanASA True) -> constantFolding e
+    Op Equal (NumberASA n1) (NumberASA n2) -> BooleanASA (n1 == n2)
+    Op Equal e1 e2 -> Op Equal (constantFolding e1) (constantFolding e2)
+    asa -> asa
 
 -- Ejercicio 6
 fresh :: [Int] -> Int
@@ -235,7 +258,7 @@ chooseInstruction t
 -- Ejercicio 8
 assembly :: [ThreeAddress] -> String
 assembly [] = ""
-assembly [x] = case x of 
+assembly [x] = case x of
   Assign t (N n) -> "MOV " ++ show n ++ " " ++ t
   Assign t (S s) -> "MOV " ++ show s ++ " " ++ t
   Assign t (B b) -> "MOV " ++ show b ++ " " ++ t
