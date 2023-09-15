@@ -53,6 +53,20 @@ test_scanner_2 =
        (scanner (lexer "2 2 + 2 =="))
        (Op Equal (NumberASA 2) (Op Sum (NumberASA 2) (NumberASA 2))))
 
+test_constantFolding_1 =
+  TestCase
+    (assertEqual
+       "constantFolding (Op And (BooleanASA True) (Op Equal (VarASA 'var') (Op Sum (NumberASA 3) (NumberASA 22))))"
+       (constantFolding (Op And (BooleanASA True) (Op Equal (VarASA "var") (Op Sum (NumberASA 3) (NumberASA 22)))))
+       (Op Equal (VarASA "var") (NumberASA 25)))
+
+test_constantFolding_2 =
+  TestCase
+    (assertEqual
+       "constantFolding (Op And (Op Equal (VarASA 'var') (VarASA 'var')) (Op Equal (VarASA 'var') (Op Sum (VarASA 'var') (NumberASA 22))))"
+       (constantFolding (Op And (Op Equal (VarASA "var") (VarASA "var")) (Op Equal (VarASA "var") (Op Sum (VarASA "var") (NumberASA 22)))))
+       (Op And (Op Equal (VarASA "var") (VarASA "var")) (Op Equal (VarASA "var") (Op Sum (VarASA "var") (NumberASA 22)))))
+
 test_fresh_1 = TestCase (assertEqual "fresh [1, 2, 3]" (fresh [1, 2, 3]) 0)
 
 test_fresh_2 =
