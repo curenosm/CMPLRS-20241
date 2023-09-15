@@ -19,6 +19,7 @@ import Practica2
   , compile
   )
 import Test.HUnit
+import Control.Exception (evaluate, SomeException, try)
 
 test_1 = TestCase (assertEqual "1" 1 1)
 
@@ -93,12 +94,11 @@ test_typeCheckerAux_3 =
        (typeCheckerAux (Op Sum (NumberASA 1) (NumberASA 1)))
        Num)
 
-test_typeCheckerAux_4 =
-  TestCase
-    (assertEqual
-       "typeCheckerAux (Op And (BooleanASA True) (NumberASA 1))"
-       (typeCheckerAux (Op And (BooleanASA True) (NumberASA 1)))
-       (error "Something went wrong"))
+test_typeCheckerAux_4 = TestCase $ do
+    result <- try (evaluate (typeCheckerAux (Op And (BooleanASA True) (NumberASA 1)))) :: IO (Either SomeException Type)
+    case result of
+        Left _  -> return () -- Success: An exception was raised
+        Right _ -> assertFailure "Expected an error, but no error was raised."
 
 test_typeChecker_1 =
   TestCase

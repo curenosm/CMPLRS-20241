@@ -118,9 +118,14 @@ typeCheckerAux (Op t l r) =
       typeR = typeCheckerAux r
    in case t of
         n
-          | n == Sum || n == Subs || n == Equal ->
+          | n == Sum || n == Subs ->
             if typeL == typeR && typeR == Num
               then Num
+              else error "Something went wrong"
+        n
+          | n == Equal ->
+            if typeL == typeR && typeR == Num
+              then Bool
               else error "Something went wrong"
         n
           | n == And || n == Or ->
@@ -190,7 +195,6 @@ constantFolding op =
     Op And (BooleanASA True) e -> constantFolding e
     Op And e (BooleanASA True) -> constantFolding e
     Op Equal (NumberASA n1) (NumberASA n2) -> BooleanASA (n1 == n2)
-    Op Equal (BooleanASA b1) (BooleanASA b2) -> BooleanASA (b1 == b2)
     Op Equal e1 e2 -> Op Equal (constantFolding e1) (constantFolding e2)
     asa -> asa
 
