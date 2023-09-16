@@ -132,29 +132,36 @@ test_threeAddress_1 =
   TestCase
     (assertEqual
        "threeAddress (Op Equal (VarASA 'var') (NumberASA 25))"
-       (threeAddress (Op Equal (VarASA "var") (NumberASA 25)))
-       [Assign "t0" (S "var"), Assign "t1" (N 25), Operation "t2" "t0" Equal "t1"])
+       [Assign "t0" (S "var"), Assign "t1" (N 25), Operation "t2" "t0" Equal "t1"]
+       (threeAddress (Op Equal (VarASA "var") (NumberASA 25))))
 
 test_threeAddress_2 =
   TestCase
     (assertEqual
        "threeAddress (Op Equal (NumberASA 50) (VarASA 'var'))"
-       (threeAddress (Op Equal (NumberASA 50) (VarASA "var")))
-       [Assign "t0" (N 50), Assign "t1" (S "var"), Operation "t2" "t0" Equal "t1"])
+       [Assign "t0" (N 50), Assign "t1" (S "var"), Operation "t2" "t0" Equal "t1"]
+       (threeAddress (Op Equal (NumberASA 50) (VarASA "var"))))
 
 test_assembly_1 =
   TestCase
     (assertEqual
        "assembly [Assign 't0' (S 'var'), Assign 't1' (N 25), Operation 't2' 't0' Equal 't1']"
-       (assembly [Assign "t0" (S "var"), Assign "t1" (N 25), Operation "t2" "t0" Equal "t1"])
-       ("MOV t0 \"var\"" ++ "\n" ++ "MOV t1 25" ++ "\n" ++ "EQ t2 t0 t1"))
+       ("MOV \"t0\" \"var\"" ++ "\n" ++ "MOV \"t1\" 25" ++ "\n" ++ "EQ \"t2\" \"t0\" \"t1\"")
+       (assembly [Assign "t0" (S "var"), Assign "t1" (N 25), Operation "t2" "t0" Equal "t1"]))
 
 test_assembly_2 =
   TestCase
     (assertEqual
        "assembly [Assign 't0' (N 50), Assign 't1' (S 'var'), Operation 't2' 't0' Equal 't1']"
-       (assembly [Assign "t0" (N 50), Assign "t1" (S "var"), Operation "t2" "t0" Equal "t1"])
-       ("MOV t0 50" ++ "\n" ++ "MOV t1 \"var\"" ++ "\n" ++ "EQ t2 t0 t1"))
+       ("MOV \"t0\" 50" ++ "\n" ++ "MOV \"t1\" \"var\"" ++ "\n" ++ "EQ \"t2\" \"t0\" \"t1\"")
+       (assembly [Assign "t0" (N 50), Assign "t1" (S "var"), Operation "t2" "t0" Equal "t1"]))
+
+test_compile_1 = 
+  TestCase
+    (assertEqual
+       "compile '22 3 + var =='"
+       (compile "22 3 + var ==")
+       ("MOV \"t0\" \"var\"" ++ "\n" ++ "MOV \"t1\" 25" ++ "\n" ++ "EQ \"t2\" \"t0\" \"t1\""))
 
 tests =
   TestList
@@ -177,6 +184,7 @@ tests =
     , test_threeAddress_2
     , test_assembly_1
     , test_assembly_2
+    , test_compile_1
     ]
 
 main = runTestTT tests

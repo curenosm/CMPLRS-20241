@@ -121,17 +121,17 @@ typeCheckerAux (Op t l r) =
           | n == Sum || n == Subs ->
             if typeL == typeR && typeR == Num
               then Num
-              else error "Something went wrong"
+              else error "Something went wrong 1"
         n
           | n == Equal ->
             if typeL == typeR && typeR == Num
               then Bool
-              else error "Something went wrong"
+              else error "Something went wrong 2"
         n
           | n == And || n == Or ->
             if typeL == typeR && typeR == Bool
               then Bool
-              else error "Something went wrong"
+              else error "Something went wrong 3"
 
 -- Ejercicio 4
 typeChecker :: ASA -> ASA
@@ -262,12 +262,12 @@ assembly [x] = case x of
   Assign t (N n) -> "MOV " ++ show n ++ " " ++ t
   Assign t (S s) -> "MOV " ++ show s ++ " " ++ t
   Assign t (B b) -> "MOV " ++ show b ++ " " ++ t
-  Operation t a op b -> (chooseInstruction op) ++ " " ++ t ++ " " ++ a ++ " " ++ b
+  Operation t a op b -> (chooseInstruction op) ++ " \"" ++ t ++ "\" \"" ++ a ++ "\" \"" ++ b  ++ "\""
 assembly (x:xs) = case x of
-  Assign t (N n) -> "MOV " ++ t ++ " " ++ show n ++ "\n" ++ assembly xs
-  Assign t (S s) -> "MOV " ++ t ++ " " ++ show s ++ "\n" ++ assembly xs
-  Assign t (B b) -> "MOV " ++ t ++ " " ++ show b ++ "\n" ++ assembly xs
-  Operation t a op b -> (chooseInstruction op) ++ " " ++ t ++ " " ++ a ++ " " ++ b ++ "\n" ++ assembly xs
+  Assign t (N n) -> "MOV \"" ++ t ++ "\" " ++ show n ++ "\n" ++ assembly xs
+  Assign t (S s) -> "MOV \"" ++ t ++ "\" " ++ show s ++ "\n" ++ assembly xs
+  Assign t (B b) -> "MOV \"" ++ t ++ "\" " ++ show b ++ "\n" ++ assembly xs
+  Operation t a op b -> (chooseInstruction op) ++ " \"" ++ show t ++ "\" \"" ++ a ++ "\" \"" ++ b ++ "\"\n" ++ assembly xs
 
 
 -- Ejercicio Extra
