@@ -181,12 +181,41 @@ fresh l = firstInRangeNotExistingInList [0 .. maximum l + 1] l
 
 -- Ejercicio 7
 threeAddressAux :: ASA -> [Int] -> ([ThreeAddress], String, [Int])
-threeAddressAux _ _ = ([], "t", [])
+threeAddressAux (VarASA var) usedTemps =
+  let
+    newTempVar = "t" ++ show (length usedTemps)
+  in
+    ([Assign newTempVar (S var)], newTempVar, length usedTemps : usedTemps)
+threeAddressAux (NumberASA num) usedTemps =
+  let
+    newTempVar = "t" ++ show (length usedTemps)
+  in
+    ([Assign newTempVar (N num)], newTempVar, length usedTemps : usedTemps)
+threeAddressAux (BooleanASA boolVal) usedTemps =
+  let
+    newTempVar = "t" ++ show (length usedTemps)
+  in
+    ([Assign newTempVar (B boolVal)], newTempVar, length usedTemps : usedTemps)
+threeAddressAux (Op token left right) usedTemps =
+  let
+    (codeLeft, tempVarLeft, updatedTemps1) = threeAddressAux left usedTemps
+    (codeRight, tempVarRight, updatedTemps2) = threeAddressAux right updatedTemps1
+    newTempVar = "t" ++ show (length updatedTemps2)
+    codeOp = case token of
+      Sum -> [Operation newTempVar tempVarLeft Sum tempVarRight]
+      Subs -> [Operation newTempVar tempVarLeft Subs tempVarRight]
+      And -> [Operation newTempVar tempVarLeft And tempVarRight]
+      Or -> [Operation newTempVar tempVarLeft Or tempVarRight]
+      Equal -> [Operation newTempVar tempVarLeft Equal tempVarRight]
+  in
+    (codeLeft ++ codeRight ++ codeOp, newTempVar, length updatedTemps2 : updatedTemps2)
 
 threeAddress :: ASA -> [ThreeAddress]
-threeAddress program = dirs
-  where
-    (dirs, t, prev_ids) = threeAddressAux program []
+threeAddress asa = 
+  let
+    (three, _, _) = threeAddressAux asa []
+    in
+      three
 
 -- threeAddressAux (Op Equal (VarASA "var") (NumberASA 25)) []
 -- (["t0" = "var", "t1" = 25, "t2" = "t0" == "t1" ], "t2", [2, 1, 0])
