@@ -17,9 +17,9 @@ jobs:
           os: [ubuntu-latest]
           ghc-version: ['8.10.3']
           cabal-version: ['3.2']
-          project: [practica1, practica2, practica3]
+          project: [practica1, practica2, practica3, practica4]
           exclude:
-            - project: practica3
+            - project: practica4
         fail-fast: true # If one fails all others will cancel
       
     runs-on: ${{ matrix.os }}

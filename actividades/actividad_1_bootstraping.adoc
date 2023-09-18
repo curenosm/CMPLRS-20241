@@ -4,7 +4,11 @@
 
 == Introducción
 
-Escribir un ensayo sobre los siguientes puntos:
+Escribir un ensayo sobre los siguientes puntos: xref:ref1[^1^]
+
+
+
+
 
 === Anecdota relacionada
 . Describir en qué consiste la técnica de bootstraping.
@@ -29,4 +33,9 @@ Un claro ejemplo de lenguaje que aplica dicha técnica es el compilador de C, el
 
 === Finalizar con pregunta abierta o reflexion impactante
 
-== Bibliografía
+
+== Referencias
+
+- [[ref1]] ^1^ Scott, M. L. (2015). Programming Language pragmatics. Morgan Kaufmann.
+- [[ref2]] ^2^ Cooper, K. D., & Torczon, L. (2022). Engineering a compiler. Morgan Kaufmann.
+- [[ref3]] ^3^ Appel, A. W., & Ginsburg, M. (2004). Modern Compiler Implementation in C. Cambridge University Press.
