@@ -195,7 +195,19 @@ threeAddress program = dirs
 -- Generación de código
 -- Ejercicio 8
 assembly :: [ThreeAddress] -> String
-assembly _ = ""
+assembly (x:xs) = assemblyAux(x) ++ assembly(xs)
+  where
+    assemblyAux :: ThreeAddress -> String
+    assemblyAux (Assign t v) = "MOV " ++ show t ++ " " ++ show v ++ " \n"
+    assemblyAux (Operation t a op b) = opAux(op) ++ show t ++ " " ++ show a ++ " " ++ show b
+      where
+        opAux(Sum) = "ADD "
+        opAux(Subs) = "SUBS "
+        opAux(And) = "AND "
+        opAux(Or) = "OR "
+        opAux(Equal) = "EQ "
+assembly [] = ""
+
 
 -- assembly ["t0" = "var", "t1" = 25, "t2" = "t0" == "t1"]
 -- MOV "t0" "var"
