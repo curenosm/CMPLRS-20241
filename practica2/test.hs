@@ -4,11 +4,14 @@ import Practica2
   , Stack
   , Token(And, Equal, Number, Or, Subs, Sum, Var)
   , Type(Bool, Num)
+  , ThreeAddress(Assign, Operation)
+  , Value(N, S, B)
   , fresh
   , lexer
   , scanner
   , typeChecker
-  , typeCheckerAux
+  , typeCheckerAux,
+  assembly
   )
 import Test.HUnit
 
@@ -106,6 +109,15 @@ test_typeChecker_2 =
           (Op Or (BooleanASA False) (BooleanASA True))
           (Op Or (BooleanASA False) (BooleanASA False))))
 
+
+test_assembly_1 = 
+  TestCase
+  (assertEqual
+    "assembly [Assign \"t0\" (S \"var\"), Assign \"t1\" (N 25),Operation \"t2\" \"t0\" Equal \"t1\" ]"
+    "MOV \"t0\" \"var\" \nMOV \"t1\" 25 \nEQ \"t2\" \"t0\" \"t1\""
+    assembly [Assign "t0" (S "var"), Assign "t1" (N 25),Operation "t2" "t0" Equal "t1" ]
+  )
+
 tests =
   TestList
     [ test_1
@@ -121,6 +133,7 @@ tests =
     , test_typeCheckerAux_4
     , test_typeChecker_1
     , test_typeChecker_2
+    , test_assembly_1
     ]
 
 main = runTestTT tests
