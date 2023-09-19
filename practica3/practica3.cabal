@@ -5,7 +5,8 @@ cabal-version:       >=1.10
 
 executable runtests
   main-is:             test.hs
-  build-depends:       base, HUnit, containers, alex
+  build-depends:       base, HUnit, containers
   hs-source-dirs:      .
   default-language:    Haskell2010
-  other-modules: Practica3
+  other-modules:       Practica3
+  build-tools:         happy, alex

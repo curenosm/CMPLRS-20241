@@ -5,8 +5,8 @@ import Practica3
 import Test.HUnit
 import Control.Exception (evaluate, SomeException, try)
 
-test_1 = TestCase ("1", 1, 1)
-test_2 = TestCase ("1", 1, 1)
+test_1 = TestCase (assertEqual "1" 1 1)
+test_2 = TestCase (assertEqual "2" 2 2)
 
 tests =
   TestList
