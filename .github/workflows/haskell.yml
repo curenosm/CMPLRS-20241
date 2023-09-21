@@ -15,12 +15,12 @@ jobs:
     strategy:
         matrix:
           os: [ubuntu-latest]
-          ghc-version: ['8.10.3']
-          cabal-version: ['3.2']
+          ghc-version: ['9.6.1']
+          cabal-version: ['3.10']
           project: [practica1, practica2, practica3, practica4]
           exclude:
             - project: practica4
-        fail-fast: true # If one fails all others will cancel
+        fail-fast: false # If one fails all others will cancel
       
     runs-on: ${{ matrix.os }}
     
@@ -42,15 +42,18 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
+    
     - name: Install dependencies
       run: |
-        cd ${{ matrix.project }}
         cabal update
         cabal build --only-dependencies --enable-tests --enable-benchmarks
+    
     - name: Build
       run: cd ${{ matrix.project }} && cabal build --enable-tests --enable-benchmarks all
+    
     - name: Run runtests
       run: cd ${{ matrix.project }} && cabal run runtests
+    
     - name: Run tests
       run: cd ${{ matrix.project }} && cabal test all
       continue-on-error: true

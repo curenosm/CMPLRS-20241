@@ -8,4 +8,4 @@ executable runtests
   build-depends:       base, HUnit, containers
   hs-source-dirs:      .
   default-language:    Haskell2010
-  other-modules: Practica2
+  other-modules:       Practica2
