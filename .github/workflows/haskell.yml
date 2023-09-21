@@ -8,52 +8,73 @@ on:
 
 permissions:
   contents: read
-
 jobs:
-  
   build:
-    strategy:
-        matrix:
-          os: [ubuntu-latest]
-          ghc-version: ['latest']
-          cabal-version: ['latest']
-          project: [practica1, practica2, practica3, practica4]
-          exclude:
-            - project: practica4
-        fail-fast: false # If one fails all others will cancel
-      
+    name: GHC ${{ matrix.ghc-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        ghc-version: ['9.6']
+        project: [practica1, practica2, practica3, practica4]
+        exclude:
+          - project: practica4
     
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-haskell@v1
-      with:
-        ghc-version: ${{ matrix.ghc-version }}
-        cabal-version: ${{ matrix.cabal-version }}
+      - uses: actions/checkout@v3
 
-    - name: Cache
-      uses: actions/cache@v3
-      env:
-        cache-name: cache-cabal
-      with:
-        path: ~/.cabal
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-    
-    - name: Install dependencies
-      run: |
-        cabal update
-        cabal build --only-dependencies --enable-tests --enable-benchmarks
-    
-    - name: Build
-      run: cd ${{ matrix.project }} && cabal build --enable-tests --enable-benchmarks all
-    
-    - name: Run runtests
-      run: cd ${{ matrix.project }} && cabal run runtests
-    
-    - name: Run tests
-      run: cd ${{ matrix.project }} && cabal test all
-      continue-on-error: true
+      - name: Set up GHC ${{ matrix.ghc-version }}
+        uses: haskell-actions/setup@v2
+        id: setup
+        with:
+          ghc-version: ${{ matrix.ghc-version }}
+          # Defaults, added for clarity:
+          cabal-version: 'latest'
+          cabal-update: true
+
+      - name: Configure the build
+        run: |
+          cabal configure --enable-tests --enable-benchmarks --disable-documentation
+          cabal build --dry-run
+        # The last step generates dist-newstyle/cache/plan.json for the cache key.
+
+      - name: Restore cached dependencies
+        uses: actions/cache/restore@v3
+        id: cache
+        env:
+          key: ${{ runner.os }}-ghc-${{ steps.setup.outputs.ghc-version }}-cabal-${{ steps.setup.outputs.cabal-version }}
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ env.key }}-plan-${{ hashFiles('**/plan.json') }}
+          restore-keys: ${{ env.key }}-
+
+      - name: Install dependencies
+        run: cabal build all --only-dependencies
+
+      # Cache dependencies already here, so that we do not have to rebuild them should the subsequent steps fail.
+      - name: Save cached dependencies
+        uses: actions/cache/save@v3
+        # Caches are immutable, trying to save with the same key would error.
+        if: ${{ steps.cache.outputs.cache-primary-key != steps.cache.outputs.cache-matched-key }}
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ steps.cache.outputs.cache-primary-key }}
+      
+      - name: Build
+        run: cd ${{ matrix.project }} && cabal build all
+      
+      - name: Run tests
+        run: cd ${{ matrix.project }} && cabal test all
+        continue-on-error: true
+      
+      - name: Run runtests
+        run: cd ${{ matrix.project }} && cabal run runtests
+  
+      - name: Check cabal file
+        run: cd ${{ matrix.project }} && cabal check
+        continue-on-error: true
+  
+      - name: Build documentation
+        run: cd ${{ matrix.project }} && cabal haddock all
+        continue-on-error: true
