@@ -15,8 +15,8 @@ jobs:
     strategy:
         matrix:
           os: [ubuntu-latest]
-          ghc-version: ['9.6.1']
-          cabal-version: ['3.10']
+          ghc-version: ['latest']
+          cabal-version: ['latest']
           project: [practica1, practica2, practica3, practica4]
           exclude:
             - project: practica4
