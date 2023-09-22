@@ -10,6 +10,10 @@ import Data.Char
 import Data.List (nub)
 
 
--- Análisis léxico
-data Token = Assign | If | Then | Else | Seq | While | Do | Skip | Boolean Bool | Equal | And | Not | Loc Int | Number Int | LP | RP | Sum deriving Show
+data Token = Assign | If | Then | Else | Seq | While | Do | Skip | Boolean Bool | Equal | And | Not | Loc Int | Number Int | LP | RP | Sum deriving (Eq, Show)
 
+lexer :: String -> [Token]
+lexer [] = []
+lexer (' ':xs) = lexer xs
+lexer ('\n':xs) = lexer xs
+lexer ('\t':xs) = lexer xs
