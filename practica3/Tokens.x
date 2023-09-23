@@ -1,5 +1,5 @@
 {
-module Main (main) where
+module Tokens where
 }
 
 %wrapper "basic"
@@ -53,7 +53,5 @@ data Token
   | Sum
   deriving (Eq, Show)
 
-main = do
-  s <- getContents
-  print (alexScanTokens s)
+lexer = alexScanTokens
 }

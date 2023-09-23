@@ -1,7 +1,7 @@
 {-# OPTIONS_GHC -fno-warn-unused-binds -fno-warn-missing-signatures #-}
 {-# LANGUAGE CPP #-}
 {-# LINE 1 "Tokens.x" #-}
-module Main (main) where
+module Tokens where
 #if __GLASGOW_HASKELL__ >= 603
 #include "ghcconfig.h"
 #elif defined(__GLASGOW_HASKELL__)
@@ -1268,9 +1268,7 @@ data Token
   | Sum
   deriving (Eq, Show)
 
-main = do
-  s <- getContents
-  print (alexScanTokens s)
+lexer = alexScanTokens
 alex_action_1 = \s -> Assign
 alex_action_2 = \s -> If
 alex_action_3 = \s -> Then
