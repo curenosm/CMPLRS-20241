@@ -1,9 +1,5 @@
 {
-module Tokens (lexer, alexScanTokens, Token (
-  Assign, If, Then, Else,
-  Seq, While, Do, Skip,
-  Boolean, Equal, And, 
-  Not, Loc, Number, LP, RP, Sum)) where
+module Tokens where
 }
 
 %wrapper "basic"
@@ -18,13 +14,19 @@ tokens :-
   if                              { \s -> If }
   then                            { \s -> Then }
   else                            { \s -> Else }
-  \;                               { \s -> Seq }
+  \;                              { \s -> Seq }
   while                           { \s -> While }
   do                              { \s -> Do }
   skip                            { \s -> Skip }
   (true|false)                    { \s -> Boolean (s == "true") }
+  =				  { \s -> Equal }
+  &				  { \s -> And }
+  \-				  { \s -> Not }
   $digit+                         { \s -> Number (read s :: Int) }
   L $digit*                       { \s -> Loc (read (tail s) :: Int) }
+  \(				  { \s -> LP }
+  \)				  { \s -> RP }
+  \+ 				  { \s -> Sum }
 
 
 {
@@ -51,7 +53,5 @@ data Token
   | Sum
   deriving (Eq, Show)
 
-lexer = do
-  s <- getContents
-  print (alexScanTokens s)
+lexer = alexScanTokens
 }
