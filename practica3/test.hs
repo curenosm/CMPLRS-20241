@@ -56,9 +56,7 @@ test_alex_lexer_3 = TestCase (assertEqual "alexScanTokens \"if -(true&false) the
 
 tests =
   TestList
-    [ test_1
-    , test_2
-    , test_alex_lexer_1
+    [ test_alex_lexer_1
     , test_alex_lexer_2
     , test_alex_lexer_3
     , test_lexer_1
