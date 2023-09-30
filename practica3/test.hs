@@ -1,6 +1,6 @@
 import Data.List
 import Practica3 (Token(Assign, If, Then, Else, Seq, While, Do, Skip, Boolean, Equal, And, Not, Loc, Number, LP, RP, Sum), lexer)
-
+import Main
 import Test.HUnit
 import Control.Exception (evaluate, SomeException, try)
 
@@ -42,6 +42,34 @@ test_lexer_6 = TestCase (assertEqual "lexer \"L2:=1;\""[ Loc 2 , Assign, Number 
 test_lexer_7 = TestCase (assertEqual "lexer \"L2:=1; L3:=0;\""[ Loc 2 , Assign, Number 1, Seq, Loc 3, Assign, Number 0, Seq ] (lexer "L2:=1; L3:=0;"))
 test_lexer_8 = TestCase (assertEqual "lexer \"L2:=1; L3:=0; while -(L2=L2) do L2:=L2+1; L3:=L3+1\""[ Loc 2 , Assign, Number 1, Seq, Loc 3, Assign, Number 0, Seq, While, Not, LP, Loc 2, Equal, Loc 2, RP, Do, Loc 2, Assign, Loc 2, Sum, Number 1, Seq, Loc 3, Assign, Loc 3, Sum, Number 1] (lexer "L2:=1; L3:=0; while -(L2=L2) do L2:=L2+1; L3:=L3+1"))
 test_lexer_9 = TestCase (assertEqual "lexer \"if -(true&false) then skip else skip\""[If, Not, LP, Boolean True, And, Boolean False, RP, Then, Skip, Else, Skip] (lexer "if -(true&false) then skip else skip"))
+test_alex_lexer_1 = TestCase (assertEqual "alexScanTokens \"L000000001 := 1\""
+  [Loc 1, Assign, Number 1]
+  (alexScanTokens "L1 := 1"))
 
-tests = TestList [ test_lexer_1, test_lexer_2, test_lexer_3, test_lexer_4, test_lexer_5, test_lexer_6, test_lexer_7, test_lexer_8, test_lexer_9 ]
+test_alex_lexer_2 = TestCase (assertEqual "alexScanTokens \"L2:=1; L3:=0; while -(L2=L2) do L2:=L2+1; L3:=L3+1\""
+  [Loc 2, Assign, Number 1, Seq, Loc 3, Assign, Number 0, Seq, While, Not, LP, Loc 2, Equal, Loc 2, RP, Do, Loc 2, Assign, Loc 2, Sum, Number 1, Seq, Loc 3, Assign, Loc 3, Sum, Number 1]
+  (alexScanTokens "L2:=1; L3:=0; while -(L2=L2) do L2:=L2+1; L3:=L3+1"))
+
+test_alex_lexer_3 = TestCase (assertEqual "alexScanTokens \"if -(true&false) then skip else skip\""
+  [If, Not, LP, Boolean True, And, Boolean False, RP, Then, Skip, Else, Skip]
+  (alexScanTokens "if -(true&false) then skip else skip"))
+
+tests =
+  TestList
+    [ test_1
+    , test_2
+    , test_alex_lexer_1
+    , test_alex_lexer_2
+    , test_alex_lexer_3
+    , test_lexer_1
+    , test_lexer_2
+    , test_lexer_3
+    , test_lexer_4
+    , test_lexer_5
+    , test_lexer_6
+    , test_lexer_7
+    , test_lexer_8
+    , test_lexer_9
+    ]
+
 main = runTestTT tests
