@@ -84,11 +84,9 @@ tablaAS (Number n) E = [T (Number n)]
 tablaAS LP E = [T LP, E, T Sum, E, T RP]
 tablaAS _ _ = []
 
+parser :: Input -> Bool
+parser input = parserAux input [S]
 
-
-
--- TODO
---parser :: Input -> Bool
 {- Ejemplo -}
 --parser [LP, Loc 2, Assign, Number 1, Seq, LP, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, LP, Loc 2, Assign, LP, Loc 2, Sum, Number 1, RP, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1, RP, RP, RP, RP]
 
