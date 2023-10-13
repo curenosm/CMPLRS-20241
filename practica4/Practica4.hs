@@ -43,19 +43,49 @@ data Content = T Token | S | C | B | E deriving (Eq, Show)
 type Input = [Token]
 type Stack = [Content]
 
--- TODO
 parserAux :: Input -> Stack -> Bool
+parserAux [] [] = True
+parserAux [] l = False
+parserAux l [] = False
+parserAux (x:xs) (T y:ys) | x == y = parserAux xs ys
+parserAux (x:xs) (y:ys) = parserAux (x:xs) ((tablaAux x y) ++ ys)
+
 {- Ejemplo -}
-parserAux [LP, Loc 2, Assign, Number 1, Seq, LP, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, LP, Loc 2, Assign, LP, Loc 2, Sum, Number 1, RP, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1, RP, RP, RP, RP] [S]
+-- parserAux [LP, Loc 2, Assign, Number 1, Seq, LP, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, LP, Loc 2, Assign, LP, Loc 2, Sum, Number 1, RP, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1, RP, RP, RP, RP] [S]
 -- True
-parserAux [ If , Not , And , Boolean True , Boolean False , Then , Skip , Else , Skip ] [ S ]
+-- parserAux [ If , Not , And , Boolean True , Boolean False , Then , Skip , Else , Skip ] [ S ]
 -- True
+
+tablaAux :: Token -> Content -> Stack
+tablaAux (Loc l) S = [C]
+tablaAux If S = [C]
+tablaAux LP S = [C]
+tablaAux While S = [C]
+tablaAux Skip S = [C]
+tablaAux (Loc l) C = [T (Loc l), T Assign, E]
+tablaAux If C = [T If, B, T Then, C, T Else, C]
+tablaAux LP C = [T LP, C, T Seq, C, T RP]
+tablaAux While C = [T While, B, T Do, C]
+tablaAux Skip C = [T Skip]
+tablaAux (Loc l) B = [E, T Equal, E]
+tablaAux (Number n) B = [E, T Equal, E]
+tablaAux LP B = [E, T Equal, E]
+tablaAux (Boolean True) B = [T (Boolean True)]
+tablaAux (Boolean False) B = [T (Boolean False)]
+tablaAux And B = [T And, B, B]
+tablaAux Not B = [T Not, B]
+tablaAux (Loc l) E = [T (Loc l)]
+tablaAux (Number n) E = [T (Number n)]
+tablaAux LP E = [T LP, E, T Sum, E, T RP]
+tablaAux _ _ = []
+
+
 
 
 -- TODO
-parser :: Input -> Bool
+--parser :: Input -> Bool
 {- Ejemplo -}
-parser [LP, Loc 2, Assign, Number 1, Seq, LP, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, LP, Loc 2, Assign, LP, Loc 2, Sum, Number 1, RP, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1, RP, RP, RP, RP]
+--parser [LP, Loc 2, Assign, Number 1, Seq, LP, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, LP, Loc 2, Assign, LP, Loc 2, Sum, Number 1, RP, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1, RP, RP, RP, RP]
 
 data C = AssignASA E E | IfThenElse B C C | SeqASA C C | WhileDo B C | SkipASA deriving (Eq, Show)
 data B = BoolASA Bool | EqualASA E E | AndASA B B | NotASA B deriving (Eq, Show)
