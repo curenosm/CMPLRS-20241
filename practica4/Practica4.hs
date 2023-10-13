@@ -47,8 +47,13 @@ parserAux :: Input -> Stack -> Bool
 parserAux [] [] = True
 parserAux [] l = False
 parserAux l [] = False
-parserAux (x:xs) (T y:ys) | x == y = parserAux xs ys
-parserAux (x:xs) (y:ys) = parserAux (x:xs) ((tablaAux x y) ++ ys)
+parserAux (t1:xs) (T t2:ys)
+  | t1 == t2 = parserAux xs ys
+parserAux (x:xs) (y:ys)
+  | entradaTabla /= [] = parserAux (x:xs) (entradaTabla ++ ys)
+  | otherwise = False
+  where
+    entradaTabla = tablaAS x y
 
 {- Ejemplo -}
 -- parserAux [LP, Loc 2, Assign, Number 1, Seq, LP, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, LP, Loc 2, Assign, LP, Loc 2, Sum, Number 1, RP, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1, RP, RP, RP, RP] [S]
@@ -56,28 +61,28 @@ parserAux (x:xs) (y:ys) = parserAux (x:xs) ((tablaAux x y) ++ ys)
 -- parserAux [ If , Not , And , Boolean True , Boolean False , Then , Skip , Else , Skip ] [ S ]
 -- True
 
-tablaAux :: Token -> Content -> Stack
-tablaAux (Loc l) S = [C]
-tablaAux If S = [C]
-tablaAux LP S = [C]
-tablaAux While S = [C]
-tablaAux Skip S = [C]
-tablaAux (Loc l) C = [T (Loc l), T Assign, E]
-tablaAux If C = [T If, B, T Then, C, T Else, C]
-tablaAux LP C = [T LP, C, T Seq, C, T RP]
-tablaAux While C = [T While, B, T Do, C]
-tablaAux Skip C = [T Skip]
-tablaAux (Loc l) B = [E, T Equal, E]
-tablaAux (Number n) B = [E, T Equal, E]
-tablaAux LP B = [E, T Equal, E]
-tablaAux (Boolean True) B = [T (Boolean True)]
-tablaAux (Boolean False) B = [T (Boolean False)]
-tablaAux And B = [T And, B, B]
-tablaAux Not B = [T Not, B]
-tablaAux (Loc l) E = [T (Loc l)]
-tablaAux (Number n) E = [T (Number n)]
-tablaAux LP E = [T LP, E, T Sum, E, T RP]
-tablaAux _ _ = []
+tablaAS :: Token -> Content -> Stack
+tablaAS (Loc l) S = [C]
+tablaAS If S = [C]
+tablaAS LP S = [C]
+tablaAS While S = [C]
+tablaAS Skip S = [C]
+tablaAS (Loc l) C = [T (Loc l), T Assign, E]
+tablaAS If C = [T If, B, T Then, C, T Else, C]
+tablaAS LP C = [T LP, C, T Seq, C, T RP]
+tablaAS While C = [T While, B, T Do, C]
+tablaAS Skip C = [T Skip]
+tablaAS (Loc l) B = [E, T Equal, E]
+tablaAS (Number n) B = [E, T Equal, E]
+tablaAS LP B = [E, T Equal, E]
+tablaAS (Boolean True) B = [T (Boolean True)]
+tablaAS (Boolean False) B = [T (Boolean False)]
+tablaAS And B = [T And, B, B]
+tablaAS Not B = [T Not, B]
+tablaAS (Loc l) E = [T (Loc l)]
+tablaAS (Number n) E = [T (Number n)]
+tablaAS LP E = [T LP, E, T Sum, E, T RP]
+tablaAS _ _ = []
 
 
 
