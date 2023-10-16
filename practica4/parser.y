@@ -16,8 +16,7 @@ import Data.List (nub)
     while        { While }
     do           { Do }
     skip         { Skip }
-    true         { Boolean True }
-    false        { Boolean False }
+    bool         { Boolean $$ }
     L            { Loc $$ }
     int          { Number $$ }
     '='          { Equal }
@@ -36,8 +35,7 @@ C : L ":=" E { AssignASA (LocASA $1) $3 }
     | while B do C { WhileDo $2 $4 }
     | skip { SkipASA }
 
-B : true { BoolASA True }
-  | false { BoolASA False }
+B : bool { BoolASA $1 }
   | E '=' E { EqualASA $1 $3 }
   | '&' B B { AndASA $2 $3 }
   | '-' B { NotASA $2 }
@@ -51,13 +49,13 @@ E : L { LocASA $1 }
 parseError :: [Token] -> a
 parseError _ = error "Parse error"
 
-data C = AssignASA E E | IfThenElse B C C | SeqASA C C | WhileDo B C | SkipASA deriving (Eq, Show)
+data C = AssignASA E E | IfThenElse B C C | SeqASA C C | WhileDo B C | SkipASA deriving Show
 
-data B = BoolASA Bool | EqualASA E E | AndASA B B | NotASA B deriving (Eq, Show)
+data B = BoolASA Bool | EqualASA E E | AndASA B B | NotASA B deriving Show
 
-data E = LocASA Int | NumberASA Int | SumASA E E deriving (Eq, Show)
+data E = LocASA Int | NumberASA Int | SumASA E E deriving Show
 
-data Token = Assign | If | Then | Else | Seq | While | Do | Skip | Boolean Bool | Equal | And | Not | Loc Int | Number Int | LP | RP | Sum deriving (Eq, Show)
+data Token = Assign | If | Then | Else | Seq | While | Do | Skip | Boolean Bool | Equal | And | Not | Loc Int | Number Int | LP | RP | Sum deriving Show
 
 lexer :: String -> [Token]
 lexer [] = []
