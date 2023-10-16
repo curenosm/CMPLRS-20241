@@ -65,7 +65,7 @@ lexer ('\t':xs) = lexer xs
 lexer (';':xs) = Seq : lexer xs
 lexer ('&':xs) = And : lexer xs
 lexer ('-':xs) = Not : lexer xs
-lexer ('&':xs) = Equal : lexer xs
+lexer ('=':xs) = Equal : lexer xs
 lexer (':':'=':xs) = Assign : lexer xs
 lexer ('s':'k':'i':'p':xs) = Skip : lexer xs
 lexer ('i':'f':xs) = If : lexer xs
