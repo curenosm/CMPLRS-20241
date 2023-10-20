@@ -4,6 +4,7 @@
 -- 318224187 Bernal Núñez Raúl
 -- 316641902 García Luna Bobadilla Uriel
 -- 419002237 Jardón Cárdenas Juan Diego
+
 module Main where
 
 import Data.Char
@@ -88,5 +89,13 @@ lexer (x:xs)
     | otherwise = error ("lexer: unexpected character " ++ [x])
 
 main = getContents >>= print . parser . lexer
+
+{- Ejemplos -}
+
+-- parser [LP, Loc 2, Assign, Number 1, Seq, LP, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, LP, Loc 2, Assign, LP, Loc 2, Sum, Number 1, RP, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1, RP, RP, RP, RP]
+-- SeqASA (AssignASA (LocASA 2) (NumberASA 1)) (SeqASA (AssignASA (LocASA 3) (NumberASA 0)) (WhileDo (NotASA (EqualASA (LocASA 2) (LocASA 2))) (SeqASA (AssignASA (LocASA 2) (SumASA (LocASA 2) (NumberASA 1))) (AssignASA (LocASA 3) (SumASA (LocASA 3) (NumberASA 1))))))
+
+-- parser $ lexer "(L2:=1; (L3:=0; while -L2 = L2 do (L2:=(L2+1); L3:=(L3+1))))"
+-- SeqASA (AssignASA (LocASA 2) (NumberASA 1)) (SeqASA (AssignASA (LocASA 3) (NumberASA 0)) (WhileDo (NotASA (EqualASA (LocASA 2) (LocASA 2))) (SeqASA (AssignASA (LocASA 2) (SumASA (LocASA 2) (NumberASA 1))) (AssignASA (LocASA 3) (SumASA (LocASA 3) (NumberASA 1))))))
 
 }
