@@ -1,4 +1,9 @@
 {
+-- Datos del equipo:
+-- 418002485 Cureño Sanchez Misael
+-- 318224187 Bernal Núñez Raúl
+-- 316641902 García Luna Bobadilla Uriel
+-- 419002237 Jardón Cárdenas Juan Diego
 module Main where
 
 import Data.Char
@@ -45,11 +50,6 @@ E : L { LocASA $1 }
   | '(' E '+' E ')' { SumASA $2 $4 }
 
 {
--- Datos del equipo:
--- 418002485 Cureño Sanchez Misael
--- 318224187 Bernal Núñez Raúl
--- 316641902 García Luna Bobadilla Uriel
--- 419002237 Jardón Cárdenas Juan Diego
 parseError :: [Token] -> a
 parseError _ = error "Parse error"
 
