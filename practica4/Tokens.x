@@ -9,24 +9,24 @@ $alpha = [a-zA-Z]       -- alphabetic characters
 
 tokens :-
 
-  $white+                         ; -- ignore white space
-  :=                              { \s -> Assign }
-  if                              { \s -> If }
-  then                            { \s -> Then }
-  else                            { \s -> Else }
-  \;                              { \s -> Seq }
-  while                           { \s -> While }
-  do                              { \s -> Do }
-  skip                            { \s -> Skip }
-  (true|false)                    { \s -> Boolean (s == "true") }
-  =				                  { \s -> Equal }
-  &				                  { \s -> And }
-  \-				              { \s -> Not }
-  $digit+                         { \s -> Number (read s :: Int) }
-  L $digit*                       { \s -> Loc (read (tail s) :: Int) }
-  \(				              { \s -> LP }
-  \)				              { \s -> RP }
-  \+ 				              { \s -> Sum }
+  $white+             ; -- ignore white space
+  :=                  { \s -> Assign }
+  if                  { \s -> If }
+  then                { \s -> Then }
+  else                { \s -> Else }
+  \;                  { \s -> Seq }
+  while               { \s -> While }
+  do                  { \s -> Do }
+  skip                { \s -> Skip }
+  (true|false)        { \s -> Boolean (s == "true") }
+  =                   { \s -> Equal }
+  &                   { \s -> And }
+  \-                  { \s -> Not }
+  $digit+             { \s -> Number (read s :: Int) }
+  L $digit*           { \s -> Loc (read (tail s) :: Int) }
+  \(                  { \s -> LP }
+  \)                  { \s -> RP }
+  \+                  { \s -> Sum }
 
 {
 -- Each action has type :: String -> Token
@@ -53,5 +53,5 @@ data Token
   deriving (Eq, Show)
 
 lexer = alexScanTokens
-}
 
+}
