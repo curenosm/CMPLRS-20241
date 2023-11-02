@@ -26,9 +26,11 @@ parserAux (x:xs) (y:ys)
     entradaTabla = tablaAS x y
 
 {- Ejemplo -}
+
 -- parserAux [LP, Loc 2, Assign, Number 1, Seq, LP, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, LP, Loc 2, Assign, LP, Loc 2, Sum, Number 1, RP, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1, RP, RP, RP, RP] [S]
 -- True
--- parserAux [ If , Not , And , Boolean True , Boolean False , Then , Skip , Else , Skip ] [ S ]
+
+-- parserAux [If, Not, And, Boolean True, Boolean False, Then, Skip, Else, Skip] [S]
 -- True
 
 tablaAS :: Token -> Content -> Stack
@@ -58,4 +60,8 @@ parser :: Input -> Bool
 parser input = parserAux input [S]
 
 {- Ejemplo -}
---parser [LP, Loc 2, Assign, Number 1, Seq, LP, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, LP, Loc 2, Assign, LP, Loc 2, Sum, Number 1, RP, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1, RP, RP, RP, RP]
+-- parser [LP, Loc 2, Assign, Number 1, Seq, LP, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, LP, Loc 2, Assign, LP, Loc 2, Sum, Number 1, RP, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1, RP, RP, RP, RP]
+-- True
+
+-- parser [If, Not, And, Boolean True, Boolean False, Then, Skip, Else, Skip]
+-- True
