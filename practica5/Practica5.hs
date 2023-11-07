@@ -32,23 +32,31 @@ type Symbols = [Content]
 
 -- TODO: Implementar
 parserAux :: Input -> Stack -> Symbols -> Bool
---Shift
-parserAux (Loc l : xs) (Q 0 : ys) ws = parserAux xs (Q 3 : Q 0 : ys) (T (Loc l) : ws)
-parserAux (Skip : xs) (Q 0 : ys) ws = parserAux xs (Q 4 : Q 0 : ys) (T Skip : ws)
+--SHIFT
+--Verificamos el primer token del input
+--Verificamos el estado en que nos encontramos
+--Continuamos la derivacion transicionando al agregar un nuevo estado y el simbolo que leimos
 parserAux (Seq : xs) (Q 2 : ys) ws = parserAux xs (Q 5 : Q 2 : ys) (T Seq : ws)
 parserAux (Assign : xs) (Q 3 : ys) ws = parserAux xs (Q 6 : Q 3 : ys) (T Assign : ws)
-parserAux (Loc l : xs) (Q 5 : ys) ws = parserAux xs (Q 3 : Q 5 : ys) (T (Loc l) : ws)
+parserAux (Skip : xs) (Q 0 : ys) ws = parserAux xs (Q 4 : Q 0 : ys) (T Skip : ws)
 parserAux (Skip : xs) (Q 5 : ys) ws = parserAux xs (Q 4 : Q 5 : ys) (T Skip : ws)
-parserAux (Loc l : xs) (Q 6 : ys) ws = parserAux xs (Q 10 : Q 6 : ys) (T (Loc l) : ws)
-parserAux (Number n : xs) (Q 6 : ys) ws = parserAux xs (Q 11 : Q 6 : ys) (T (Number n) : ws)
 parserAux (Sum : xs) (Q 9 : ys) ws = parserAux xs (Q 12 : Q 9 : ys) (T Sum : ws)
-parserAux (Loc l : xs) (Q 12 : ys) ws = parserAux xs (Q 10 : Q 12 : ys) (T (Loc l) : ws)
-parserAux (Number n : xs) (Q 12 : ys) ws = parserAux xs (Q 11 : Q 12 : ys) (T (Number n) : ws)
---Reduce
-parserAux [] (Q 4 : ys) (T Skip : ws) = parserAux [] (Q 2 : ys) (PC : ws)
-parserAux [] (Q 2 : ys) (PC : ws ) = parserAux [] (Q 1 : ys) (C : ws)
---Accept
-parserAux [] (Q 1 : ys) ws = True
+parserAux (Loc l : xs) (Q 0 : ys) ws = parserAux xs (Q 3 : Q 0 : ys) (T (Loc l) : ws)
+parserAux (Loc l : xs) (Q 5 : ys) ws = parserAux xs (Q 3 : Q 5 : ys) (T (Loc l) : ws)
+parserAux (Loc l : xs) (Q 9 : ys) ws = parserAux xs (Q 12 : Q 9 : ys) (T (Loc l) : ws)
+parserAux (Number n : xs) (Q 6 : ys) ws = parserAux xs (Q 11 : Q 6 : ys) ( T (Number n) : ws)
+parserAux (Number n : xs) (Q 12 : ys) ws = parserAux xs (Q 11 : Q 12 : ys) ( T (Number n) : ws)
+--REDUCE 
+--Verificamos el primer token del input (el simbolo de fin de cadena es equivalente a un input vacio)
+--Verificamos el estado en el que nos encontramos
+--Verificamos que los simbolos y estados que vamos a descartar son correctos
+--Continuamos la derivacion reemplazando estados y simbolos
+parserAux (Seq : xs) (Q 4 : ys) (T Skip : ws) = parserAux (Seq : xs) (Q 2:ys) (PC:ws)
+parserAux [] (Q 4:ys) (T Skip:ws) = parserAux [] (Q 2:ys) (PC:ws)
+parserAux [] (Q 2:ys) (PC:ws) = parserAux [] (Q 1:ys) (C:ws)
+
+--ACCEPT
+parserAux [] (Q 1:ys) ws = True
 parserAux _ _ _ = False
 
 {- Ejemplo -}
