@@ -45,6 +45,7 @@ parserAux (Loc l : xs) (Q 0 : ys) ws = parserAux xs (Q 3 : Q 0 : ys) (T (Loc l) 
 parserAux (Loc l : xs) (Q 5 : ys) ws = parserAux xs (Q 3 : Q 5 : ys) (T (Loc l) : ws)
 parserAux (Loc l : xs) (Q 9 : ys) ws = parserAux xs (Q 12 : Q 9 : ys) (T (Loc l) : ws)
 parserAux (Number n : xs) (Q 6 : ys) ws = parserAux xs (Q 11 : Q 6 : ys) ( T (Number n) : ws)
+parserAux (Loc l : xs) (Q 6 : ys) ws = parserAux xs (Q 10 : Q 6 : ys) ( T (Loc l) : ws)
 parserAux (Number n : xs) (Q 12 : ys) ws = parserAux xs (Q 11 : Q 12 : ys) ( T (Number n) : ws)
 --REDUCE 
 --Verificamos el primer token del input (el simbolo de fin de cadena es equivalente a un input vacio)
@@ -52,9 +53,27 @@ parserAux (Number n : xs) (Q 12 : ys) ws = parserAux xs (Q 11 : Q 12 : ys) ( T (
 --Verificamos que los simbolos y estados que vamos a descartar son correctos
 --Continuamos la derivacion reemplazando estados y simbolos
 parserAux (Seq : xs) (Q 4 : ys) (T Skip : ws) = parserAux (Seq : xs) (Q 2:ys) (PC:ws)
-parserAux [] (Q 4:ys) (T Skip:ws) = parserAux [] (Q 2:ys) (PC:ws)
-parserAux [] (Q 2:ys) (PC:ws) = parserAux [] (Q 1:ys) (C:ws)
+parserAux (Seq : xs) (Q 8 : Q 6 : Q 3 : Q 0 : ys) (T (Loc l) : T Assign : E : ws) = parserAux (Seq : xs) (Q 2 : Q 0: ys) (PC : ws)
+parserAux (Seq : xs) (Q 9 : Q 6 : ys) (PE : ws) = parserAux (Seq : xs) (Q 8 : Q 6 : ys) (E : ws)
+parserAux (Seq : xs) (Q 9 : Q 12 : ys) (PE : ws) = parserAux (Seq : xs) (Q 13 : Q 12 : ys) (E : ws)
+parserAux (Seq : xs) (Q 10 : Q 6 : ys) (T (Loc l) : ws) = parserAux (Seq : xs) (Q 9 : Q 6 : ys) (PE : ws)
+parserAux (Seq : xs) (Q 10 : Q 12 : ys) (T (Loc l) : ws) = parserAux (Seq : xs) (Q 9 : Q 12 : ys) (PE : ws)
+parserAux (Seq : xs) (Q 11 : Q 6 : ys) (T (Number n) : ws) = parserAux (Seq : xs) (Q 9 : Q 6 : ys) (PE : ws)
+parserAux (Seq : xs) (Q 11 : Q 12 : ys) (T (Number n) : ws) = parserAux (Seq : xs) (Q 9 : Q 12 : ys) (PE : ws)
+parserAux (Seq : xs) (Q 13 : Q 12 : ys) ( PE : T (Number n) : ws ) = parserAux (Seq : xs) (Q 9 : Q 12 : ys) (PE : ws)
+parserAux (Sum : xs) (Q 10 : Q 6 : ys) (T (Loc l) : ws) = parserAux (Sum : xs) (Q 9 : Q 6 : ys) (PE : ws)
+parserAux (Sum : xs) (Q 10 : Q 12 : ys) (T (Loc l) : ws) = parserAux (Sum : xs) (Q 9 : Q 12 : ys) (PE : ws)
+parserAux (Sum : xs) (Q 11 : Q 6 : ys) (T (Number n) : ws) = parserAux (Sum : xs) (Q 9 : Q 6 : ys) (PE : ws)
+parserAux (Sum : xs) (Q 11 : Q 12 : ys) (T (Number n) : ws) = parserAux (Sum : xs) (Q 9 : Q 12 : ys) (PE : ws)
+parserAux [] (Q 4 : ys) (T Skip : ws) = parserAux [] (Q 2:ys) (PC:ws)
+parserAux [] (Q 2 : ys) (PC : ws) = parserAux [] (Q 1 : ys) (C : ws)
 
+-- parserAux [] (Q 7 : Q 5 : Q 2 : ys) (C : T Seq : PC : ws) = parserAux [] (Q 1 : ys) (C : ws)
+-- parserAux [] (Q 8 : Q 6 : Q 3 : ys) (E : T Assign : T (Loc l) : ws) = parserAux [] (Q 1 : ys) (C : ws)
+-- parserAux [] (Q 9 : Q 6 : Q 3 : ys) (PE : T Assign : T (Loc l) : ws) = parserAux [] (Q 1 : ys) (C : ws) 
+-- parserAux [] (Q 10 : Q 6 : Q 3 : ys) (T (Loc a) : T Assign : T (Loc b) : ws) = parserAux [] (Q 1 : ys) (C : ws)
+-- parserAux [] (Q 11 : Q 6 : Q 3 : ys) (T (Number n) : T Assign : T (Loc l) : ws) = parserAux [] (Q 1 : ys) (C : ws)
+-- parserAux [] (Q 13 : Q 12 : Q 9 : Q 6 : Q 3 : ys) (E : T Sum : PE : T Assign : T (Loc l) : ws) = parserAux [] (Q 1 : ys) (C : ws)
 --ACCEPT
 parserAux [] (Q 1:ys) ws = True
 parserAux _ _ _ = False
