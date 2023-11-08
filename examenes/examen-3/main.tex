@@ -1,0 +1,97 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{float}
+\usepackage{forest}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lipsum}
+\usepackage{listings}
+\usepackage{ragged2e}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+% \usepackage{mathrsfs}
+%\usepackage{tikz}
+\usepackage[top=1in, left=1.25in, right=1.25in, bottom=1in]{geometry}
+
+\title{Examen 3, Compiladores}
+\author{
+Bernal Núñez Raúl \\
+Cureño Sanchez Misael
+}
+\date{Fecha límite de entrega: Miercoles 08 de noviembre a las 23:59.}
+
+\begin{document}
+\maketitle
+\begin{enumerate}
+  \item (25 pts.) Dada la siguiente gramática:
+
+  $$E \rightarrow (E + T) \quad | \quad \textit{id} $$
+  $$T \rightarrow (T * F) \quad | \quad \textit{id} $$
+  $$F \rightarrow \textit{id} $$
+
+  \begin{enumerate}
+      \item Construir el AFD y la tabla de análisis para un analizador LR(0).
+      \begin{proof}[\textbf{Solución: }]
+        \quad \\ \\
+      \end{proof}
+      
+      \item Construir el AFD y la tabla de análisis para un analizador SLR(1).
+      \begin{proof}[\textbf{Solución: }]
+        \quad \\ \\
+      \end{proof}
+      
+      \item la cadena $(6 + (4 + 2))$ con ambos analizadores.
+      \begin{proof}[\textbf{Solución: }]
+        \quad \\ \\
+      \end{proof}
+  \end{enumerate}
+
+  \item (25 pts.) Indica si los siguientes enunciados son falsos o verdaderos. Justifica tu respuesta.
+  \begin{enumerate}
+      \item Una gramática LR(1) que no es LALR(1) debe tener sólo conflictos de reducción-reducción.
+      \begin{proof}[\textbf{Solución: }]
+        \quad \\ \\
+      \end{proof}
+      
+      \item Pueden haber gramáticas SLR(1) que no sean LALR(1).
+      \begin{proof}[\textbf{Solución: }]
+        \quad \\ \\
+      \end{proof}
+  \end{enumerate}
+
+  \item (25 pts) Dada la siguiente gramática con atributos:
+  \begin{enumerate}
+      \item Mostrar el árbol sintáctico (gramatical o ASA) decorado para la cadena de entrada \textit{aaaa} e indicar la salida que provoca el análisis semántico.
+      \begin{proof}[\textbf{Solución: }]
+        \quad \\ \\
+      \end{proof}
+  \end{enumerate}
+
+  \item (25 pts) Dada la siguiente gramática que genera números binarios:
+
+  $$ A \rightarrow AB \quad | \quad B$$
+  $$ B \rightarrow 0 \quad | \quad 1$$
+
+  \begin{enumerate}
+      \item Obtener la gramática con atributos que al analizar un número binario calcule su equivalente en decimal.
+      \begin{proof}[\textbf{Solución: }]
+        \quad \\ \\
+      \end{proof}
+      
+      \item Mostrar el árbol para la cadena de entrada 101 e indicar la salida que provoca el análisis semántico.
+      \begin{proof}[\textbf{Solución: }]
+        \quad \\ \\
+      \end{proof}
+  \end{enumerate}
+\end{enumerate}
+
+\end{document}
