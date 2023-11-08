@@ -37,7 +37,7 @@ parserAux [] (Q 8:ys) (E:T Assign:T (Loc l):ws) = parserAux [] (Q 2:ys) (PC:ws)
 parserAux [] (Q 9:ys) (PE:ws) = parserAux [] (Q 8:ys) (E:ws) || parserAux [] (Q 13:ys) (E:ws)
 parserAux [] (Q 10:ys) (T (Loc l):ws) = parserAux [] (Q 9:ys) (PE:ws)
 parserAux [] (Q 11:ys) (T (Number n):ws) = parserAux [] (Q 9:ys) (PE:ws)
-parserAux [] (Q 13:ys) (E:T Sum:PE:ws) = parserAux [] (Q 9:ys) (PE:ws)
+parserAux [] (Q 13:ys) (E:T Sum:PE:ws) = parserAux [] (Q 8:ys) (E:ws) || parserAux [] (Q 13:ys) (E:ws)
 
 parserAux (Sum:xs) (Q 10:ys) (T (Loc l):ws) = parserAux (Sum:xs) (Q 9:ys) (PE:ws)
 parserAux (Sum:xs) (Q 11:ys) (T (Number n):ws) = parserAux (Sum:xs) (Q 9:ys) (PE:ws)
@@ -47,7 +47,7 @@ parserAux (Seq:xs) (Q 8:ys) (E:T Assign:T (Loc l):ws) = parserAux (Seq:xs) (Q 2:
 parserAux (Seq:xs) (Q 9:ys) (PE:ws) = parserAux (Seq:xs) (Q 8:ys) (E:ws) || parserAux [] (Q 13:ys) (E:ws)
 parserAux (Seq:xs) (Q 10:ys) (T (Loc l):ws) = parserAux (Seq:xs) (Q 9:ys) (PE:ws)
 parserAux (Seq:xs) (Q 11:ys) (T (Number n):ws) = parserAux (Seq:xs) (Q 9:ys) (PE:ws)
-parserAux (Seq:xs) (Q 13:ys) (E:T Sum:PE:ws) = parserAux (Seq:xs) (Q 9:ys) (PE:ws)
+parserAux (Seq:xs) (Q 13:ys) (E:T Sum:PE:ws) = parserAux (Seq:xs) (Q 8:ys) (E:ws) || parserAux (Seq:xs) (Q 13:ys) (E:ws)
 
 -- Aceptación
 parserAux [] (Q 1:ys) ws = True
