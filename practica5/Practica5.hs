@@ -35,39 +35,23 @@ parserAux [] (Q 2:Q 5:ys) (PC:ws ) = parserAux [] (Q 7:Q 5:ys) (C:ws)
 parserAux [] (Q 4:ys) (T Skip:ws) = parserAux [] (Q 2:ys) (PC:ws)
 parserAux [] (Q 7:Q 5:Q 2:Q 0:ys) (C:T Seq:PC:ws) = parserAux [] (Q 1:Q 0:ys) (C:ws)
 parserAux [] (Q 7:Q 5:Q 2:Q 5:ys) (C:T Seq:PC:ws) = parserAux [] (Q 7:Q 5:ys) (C:ws)
---parserAux [] (Q 8:ys) (E:T Assign:T (Loc l):ws) = parserAux [] (Q 2:ys) (PC:ws)
---parserAux [] (Q 8:Q 6:Q 3:Q 0:ys) (E:T Assign:T (Loc l):ws) = parserAux [] (Q 2:Q 0:ys) (PC:ws)
---parserAux [] (Q 8:Q 6:Q 3:Q 5:ys) (E:T Assign:T (Loc l):ws) = parserAux [] (Q 2:Q 5:ys) (PC:ws)
 parserAux [] (Q 8:Q 6:Q 3:ys) (E:T Assign:T (Loc l):ws) = parserAux [] (Q 2:ys) (PC:ws)
---parserAux [] (Q 9:ys) (PE:ws) = parserAux [] (Q 8:ys) (E:ws) || parserAux [] (Q 13:ys) (E:ws)
 parserAux [] (Q 9:Q 6:ys) (PE:ws) = parserAux [] (Q 8:Q 6:ys) (E:ws)
 parserAux [] (Q 9:Q 12:ys) (PE:ws) = parserAux [] (Q 13:Q 12:ys) (E:ws)
-
---parserAux [] (Q 10:Q 6:ys) (T (Loc l):ws) = parserAux [] (Q 9:Q 6:ys) (PE:ws)
---parserAux [] (Q 10:Q 12:ys) (T (Loc l):ws) = parserAux [] (Q 9:Q 12:ys) (PE:ws)
 parserAux [] (Q 10:ys) (T (Loc l):ws) = parserAux [] (Q 9:ys) (PE:ws)
 parserAux [] (Q 11:ys) (T (Number n):ws) = parserAux [] (Q 9:ys) (PE:ws)
---parserAux [] (Q 13:ys) (E:T Sum:PE:ws) = parserAux [] (Q 8:ys) (E:ws) || parserAux [] (Q 13:ys) (E:ws)
---parserAux [] (Q 13:Q 12:Q 9:Q 6:ys) (E:T Sum:PE:ws) = parserAux [] (Q 8:Q 12:Q 9:Q 6:ys) (E:ws)
 parserAux [] (Q 13:Q 12:Q 9:Q 6:ys) (E:T Sum:PE:ws) = parserAux [] (Q 8:Q 6:ys) (E:ws)
---parserAux [] (Q 13:Q 12:Q 9:Q 12:ys) (E:T Sum:PE:ws) = parserAux [] (Q 13:Q 12:Q 9:Q 12:ys) (E:ws)
 parserAux [] (Q 13:Q 12:Q 9:Q 12:ys) (E:T Sum:PE:ws) = parserAux [] (Q 13:Q 12:ys) (E:ws)
 
 parserAux (Sum:xs) (Q 10:ys) (T (Loc l):ws) = parserAux (Sum:xs) (Q 9:ys) (PE:ws)
 parserAux (Sum:xs) (Q 11:ys) (T (Number n):ws) = parserAux (Sum:xs) (Q 9:ys) (PE:ws)
 
 parserAux (Seq:xs) (Q 4:ys) (T Skip:ws) = parserAux (Seq:xs) (Q 2:ys) (PC:ws)
---parserAux (Seq:xs) (Q 8:ys) (E:T Assign:T (Loc l):ws) = parserAux (Seq:xs) (Q 2:ys) (PC:ws)
---parserAux (Seq:xs) (Q 8:Q 6:Q 3:Q 0:ys) (E:T Assign:T (Loc l):ws) = parserAux (Seq:xs) (Q 2:Q 0:ys) (PC:ws)
---parserAux (Seq:xs) (Q 8:Q 6:Q 3:Q 5:ys) (E:T Assign:T (Loc l):ws) = parserAux (Seq:xs) (Q 2:Q 5:ys) (PC:ws)
 parserAux (Seq:xs) (Q 8:Q 6:Q 3:ys) (E:T Assign:T (Loc l):ws) = parserAux (Seq:xs) (Q 2:ys) (PC:ws)--
---parserAux (Seq:xs) (Q 9:ys) (PE:ws) = parserAux (Seq:xs) (Q 8:ys) (E:ws) || parserAux [] (Q 13:ys) (E:ws)
 parserAux (Seq:xs) (Q 9:Q 6:ys) (PE:ws) = parserAux (Seq:xs) (Q 8:Q 6:ys) (E:ws)
 parserAux (Seq:xs) (Q 9:Q 12:ys) (PE:ws) = parserAux (Seq:xs) (Q 13:Q 12:ys) (E:ws)
-
 parserAux (Seq:xs) (Q 10:ys) (T (Loc l):ws) = parserAux (Seq:xs) (Q 9:ys) (PE:ws)
 parserAux (Seq:xs) (Q 11:ys) (T (Number n):ws) = parserAux (Seq:xs) (Q 9:ys) (PE:ws)
---parserAux (Seq:xs) (Q 13:ys) (E:T Sum:PE:ws) = parserAux (Seq:xs) (Q 8:ys) (E:ws) || parserAux (Seq:xs) (Q 13:ys) (E:ws)
 parserAux (Seq:xs) (Q 13:Q 12:Q 9:Q 6:ys) (E:T Sum:PE:ws) = parserAux (Seq:xs) (Q 8:Q 6:ys) (E:ws)
 parserAux (Seq:xs) (Q 13:Q 12:Q 9:Q 12:ys) (E:T Sum:PE:ws) = parserAux (Seq:xs) (Q 13:Q 12:ys) (E:ws)
 
@@ -84,28 +68,21 @@ parser input = parserAux input [Q 0] []
 
 -- Ejemplos
 
+-- parser [Loc 2, Assign, Number 1, Seq, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, Loc 2, Assign, LP, Loc 2, Sum, Number 1, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1]
+-- False
+
 -- parser [Loc 1, Assign, Number 1, Seq, Loc 2, Assign, Number 2, Seq, Skip]
 -- True
 
 -- parser [Loc 1, Assign, Number 1, Seq, Loc 2, Assign, Number 2, Seq, Loc 3, Assign, Number 8, Sum, Loc 5, Sum, Number 15]
 -- True
 
--- L1 := 1 ; L2 := 2 ; L3 := 8 + L5 + 15
-
 -- parser [Loc 1, Assign, Number 1, Sum, Loc 2, Seq, Loc 3, Assign, Number 3]
 -- True
-
--- L1 := 1 + L2 ; L3 := 3
-
 
 -- parser [Loc 1, Assign, Loc 4, Seq, Loc 2, Assign, Number 2, Seq, Loc 3, Assign, Number 8, Sum, Loc 5, Sum, Number 15]
 -- True
 
--- parser [Loc 2, Assign, Number 1, Seq, Loc 3, Assign, Number 0, Seq, While, Not, Loc 2, Equal, Loc 2, Do, Loc 2, Assign, LP, Loc 2, Sum, Number 1, Seq, Loc 3, Assign, LP, Loc 3, Sum, Number 1]
--- False
-
 -- parser [Loc 1, Assign, Number 1, Sum, Loc 2, Sum, Loc 5, Seq, Loc 3, Assign, Number 3, Seq, Skip]
 -- True
 
--- parser [Loc 1, Assign, Number 1, Sum, Loc 2, Seq, Loc 3, Assign, Number 3]
--- True
