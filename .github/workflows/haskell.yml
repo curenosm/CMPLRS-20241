@@ -17,9 +17,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         ghc-version: ['9.6']
-        project: [practica1, practica2, practica3, practica4, practica5, practica6]
+        project: [practica1, practica2, practica3, practica4, practica5, practica6, proyecto_final]
         exclude:
-          - project: practica6
+          - project: proyecto_final
     
     steps:
       - uses: actions/checkout@v3
