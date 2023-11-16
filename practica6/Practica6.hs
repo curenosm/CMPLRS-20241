@@ -1,3 +1,5 @@
+module Practica6 where
+
 -- Datos del equipo:
 -- 418002485 Cureño Sanchez Misael
 -- 318224187 Bernal Núñez Raúl
@@ -7,7 +9,7 @@
 data ASA = Assign ASA ASA
     | IfThenElse ASA ASA ASA
     | Seq ASA ASA
-    | WhileDo C C
+    | WhileDo ASA ASA
     | Skip
     | Boolean Bool
     | Equal ASA ASA
