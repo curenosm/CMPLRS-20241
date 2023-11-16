@@ -4,4 +4,4 @@ import Test.HUnit
 import Control.Exception (evaluate, SomeException, try)
 
 
-main = runTestTT (TestsList [])
+main = runTestTT (TestList [])
