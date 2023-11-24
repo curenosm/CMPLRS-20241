@@ -19,29 +19,29 @@ data ASA = Assign ASA ASA
     | Number Int
     | Sum ASA ASA deriving Show
 
-data Type = Num | Bool | Void deriving Show
+data Type = Num | Bool | Void deriving (Show, Eq)
 
--- TODO: Define la función typeCheckerAux que recibe un ASA y devuelve
--- el tipo de la expresión únicamente si el tipado del programa es consistente
--- en otro arroja un error indicando el problema con el programa.
+checkType :: [ASA] -> Type -> Type -> Type
+checkType xs t res = if all (==t) (map typeCheckerAux xs) then res else error "Not implemented"
+
 typeCheckerAux :: ASA -> Type
-typeCheckerAux _ = error "Not implemented"
-{- Ejemplo
+typeCheckerAux (Number _)      = Num
+typeCheckerAux (Boolean _)     = Bool
+typeCheckerAux (Loc _)         = Num
+typeCheckerAux (Skip)          = Void
+typeCheckerAux (Not         e) = checkType [e] Bool Bool
+typeCheckerAux (Assign    l v) = checkType [v] Num Void
+typeCheckerAux (And       l r) = checkType [l, r] Bool Bool
+typeCheckerAux (Equal     l r) = checkType [l, r] Num Bool
+typeCheckerAux (Sum       l r) = checkType [l, r] Num Num
+typeCheckerAux (Seq cur next)  = checkType [cur, next] Void Void
+typeCheckerAux (IfThenElse c body other) = if typeCheckerAux c == Bool
+    then checkType [body, other] Void Void else error "Not implemented"
+typeCheckerAux (WhileDo c body)       = if typeCheckerAux c == Bool
+    then checkType [body] Void Void else error "Not implemented"
 
-typeCheckerAux (Sum (Loc 2) (Number 5))
-Num
--}
-
-
--- TODO: Define la función typeChecker que recibe un ASA y devuelve dicho ASA
--- si el tipado del programa es consistente y el programa es admisible.
 typeChecker :: ASA -> ASA
-typeChecker _ = error "Not implemented"
-{- Ejemplo
+typeChecker asa = if typeCheckerAux asa `elem` [Num, Bool, Void] 
+    then asa 
+    else error "Not implemented"
 
-typeCheckerAux (Sum (Loc 2) (Number 5))
-error: Las expresiones aritméticas no son programas válidos en el lenguaje.
-
-typeCheckerAux (IfThenElse (Number 2) (Not (Number 5)) (Skip))
-error: El tipo de (Number 2) no es el esperado.
--}

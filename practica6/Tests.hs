@@ -18,10 +18,16 @@ test_typeCheckerAux_2 = TestCase $ do
         Right _ -> assertFailure "Expected an error, but no error was raised."
         -- "error: El tipo de (Number 2) no es el esperado."
 
+test_typeCheckerAux_3 = TestCase (
+    assertEqual "(IfThenElse (Number 2) (Not (Number 5)) (Skip))" 
+    Num 
+    (typeCheckerAux (Sum (Loc 2) (Number 5))))
+
 tests =
   TestList
     [ test_typeCheckerAux_1
     , test_typeCheckerAux_2
+    , test_typeCheckerAux_3
     ]
 
 main = runTestTT tests
