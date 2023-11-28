@@ -21,20 +21,24 @@ data ASA = Assign ASA ASA
 
 data Type = Num | Bool | Void deriving Show
 
+
 -- Función auxiliar para verificar si un Type es de tipo Bool.
 typeIsBool :: Type -> Bool
 typeIsBool Bool = True
 typeIsBool _ = False
+
 
 -- Función auxiliar para verificar si un Type es de tipo Num.
 typeIsNum :: Type -> Bool
 typeIsNum Num = True
 typeIsNum _ = False
 
+
 -- Función auxiliar para verificar si un Type es de tipo Void.
 typeIsVoid :: Type -> Bool
 typeIsVoid Void = True
 typeIsVoid _ = False
+
 
 -- Función auxiliar que verifica los tipos de un ASA.
 typeCheckerAux :: ASA -> Type
@@ -90,38 +94,15 @@ typeCheckerAux (WhileDo b c)
     t1 = typeCheckerAux b
     t2 = typeCheckerAux c
 
+
 -- Función auxiliar que verifica si un Type es un tipo.
 isType :: Type -> Bool
 isType t = typeIsBool t || typeIsNum t || typeIsVoid t
 
+
 -- Función principal que dada un ASA, verifica si es un programa admisible, si lo es entonces verifica el tipo del ASA.
 -- Si el tipado es correcto regresa el ASA, en caso contrario se regresa el error de typeCheckerAux.
 typeChecker :: ASA -> ASA
-typeChecker (Assign l a)
-  | isType t = (Assign l a)
-  | otherwise = error ":("
-  where
-    t = typeCheckerAux (Assign l a)
-typeChecker (IfThenElse b c1 c2)
-  | isType t = (IfThenElse b c1 c2)
-  | otherwise = error ":("
-  where
-    t = typeCheckerAux (IfThenElse b c1 c2)
-typeChecker (Seq c1 c2)
-  | isType t = (Seq c1 c2)
-  | otherwise = error ":("
-  where
-    t = typeCheckerAux (Seq c1 c2)
-typeChecker (WhileDo b c)
-  | isType t = (WhileDo b c)
-  | otherwise = error ":("
-  where
-    t = typeCheckerAux (WhileDo b c)
-typeChecker Skip
-  | isType t = Skip
-  | otherwise = error ":("
-  where
-    t = typeCheckerAux Skip
 typeChecker (Boolean b) = error "Los booleanos no son programas válidos en el lenguaje."
 typeChecker (Equal a1 a2) = error "Las operaciones de Equal no son programas válidos en el lenguaje."
 typeChecker (And a1 a2) = error "Las operaciones de AND no son programas válidos en el lenguaje."
@@ -129,3 +110,8 @@ typeChecker (Not b) = error "Las operaciones de NOT no son programas válidos en
 typeChecker (Loc l) = error "Las localidades no son programas válidos en el lenguaje."
 typeChecker (Number n) = error "Los números no son programas válidos en el lenguaje."
 typeChecker (Sum a1 a2) = error "Las sumas no son programas válidos en el lenguaje."
+typeChecker asa
+  | isType t = asa
+  | otherwise = error "El ASA no está bien tipado."
+  where
+    t = typeCheckerAux asa
