@@ -19,16 +19,42 @@ data ASA = Assign ASA ASA
     | Number Int
     | Sum ASA ASA deriving Show
 
-data Type = Num | Bool | Void deriving (Show, Eq)
+data Type = Num | Bool | Void deriving Show
 
-checkType :: [ASA] -> Type -> Type -> Type
-checkType xs t res = if all (==t) (map typeCheckerAux xs) then res else error "Not implemented"
+{-checkType :: [ASA] -> Type -> Type -> Type
+checkType xs t res = if all (==t) (map typeCheckerAux xs) then res else error "Not implemented"-}
+
+typeCheckerEqual :: Type -> Type -> Bool
+typeCheckerEqual Num Num = True
+typeCheckerEqual Bool Bool = True
+typeCheckerEqual Void Void = True
+typeCheckerEqual _ _ = False
+
+typeIsBool :: Type -> Bool
+typeIsBool Bool = True
+typeIsBool _ = False
+
+typeIsNum :: Type -> Bool
+typeIsNum Num = True
+typeIsNum _ = False
+
+typeIsVoid :: Type -> Bool
+typeIsVoid Num = True
+typeIsVoid _ = False
 
 typeCheckerAux :: ASA -> Type
+typeCheckerAux (Loc _)         = Num
 typeCheckerAux (Number _)      = Num
 typeCheckerAux (Boolean _)     = Bool
-typeCheckerAux (Loc _)         = Num
-typeCheckerAux (Skip)          = Void
+typeCheckerAux Skip          = Void
+typeCheckerAux (Sum a1 a2)
+  | typeCheckerEqual t1 t2 && typeIsNum t1 = Num
+  | otherwise = error "El tipo de los operandos es incorrecto."
+  where
+    t1 = typeCheckerAux a1
+    t2 = typeCheckerAux a2
+
+{-
 typeCheckerAux (Not         e) = checkType [e] Bool Bool
 typeCheckerAux (Assign    l v) = checkType [v] Num Void
 typeCheckerAux (And       l r) = checkType [l, r] Bool Bool
@@ -38,10 +64,12 @@ typeCheckerAux (Seq cur next)  = checkType [cur, next] Void Void
 typeCheckerAux (IfThenElse c body other) = if typeCheckerAux c == Bool
     then checkType [body, other] Void Void else error "Not implemented"
 typeCheckerAux (WhileDo c body)       = if typeCheckerAux c == Bool
-    then checkType [body] Void Void else error "Not implemented"
+    then checkType [body] Void Void else error "Not implemented"-}
 
-typeChecker :: ASA -> ASA
+
+
+{-typeChecker :: ASA -> ASA
 typeChecker asa = if typeCheckerAux asa `elem` [Num, Bool, Void] 
     then asa 
     else error "Not implemented"
-
+-}
