@@ -93,11 +93,39 @@ isType :: Type -> Bool
 isType t = typeIsBool t || typeIsNum t || typeIsVoid t
 
 typeChecker :: ASA -> ASA
-typeChecker asa
-  | isType t = asa
-  | otherwise = error "Ocurrió un error en el ASA dado."
+typeChecker (Assign l a)
+  | isType t = (Assign l a)
+  | otherwise = error ":("
   where
-    t = typeCheckerAux asa
+    t = typeCheckerAux (Assign l a)
+typeChecker (IfThenElse b c1 c2)
+  | isType t = (IfThenElse b c1 c2)
+  | otherwise = error ":("
+  where
+    t = typeCheckerAux (IfThenElse b c1 c2)
+typeChecker (Seq c1 c2)
+  | isType t = (Seq c1 c2)
+  | otherwise = error ":("
+  where
+    t = typeCheckerAux (Seq c1 c2)
+typeChecker (WhileDo b c)
+  | isType t = (WhileDo b c)
+  | otherwise = error ":("
+  where
+    t = typeCheckerAux (WhileDo b c)
+typeChecker Skip
+  | isType t = Skip
+  | otherwise = error ":("
+  where
+    t = typeCheckerAux Skip
+typeChecker (Boolean b) = error "Los booleanos no son programas válidos en el lenguaje."
+typeChecker (Equal a1 a2) = error "Las operaciones de Equal no son programas válidos en el lenguaje."
+typeChecker (And a1 a2) = error "Las operaciones de AND no son programas válidos en el lenguaje."
+typeChecker (Not b) = error "Las operaciones de NOT no son programas válidos en el lenguaje."
+typeChecker (Loc l) = error "Las localidades no son programas válidos en el lenguaje."
+typeChecker (Number n) = error "Los números no son programas válidos en el lenguaje."
+typeChecker (Sum a1 a2) = error "Las sumas no son programas válidos en el lenguaje."
+
 
 {-
 typeCheckerAux (Not         e) = checkType [e] Bool Bool
