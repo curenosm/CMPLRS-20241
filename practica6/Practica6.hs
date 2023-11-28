@@ -24,12 +24,6 @@ data Type = Num | Bool | Void deriving Show
 {-checkType :: [ASA] -> Type -> Type -> Type
 checkType xs t res = if all (==t) (map typeCheckerAux xs) then res else error "Not implemented"-}
 
-typeCheckerEqual :: Type -> Type -> Bool
-typeCheckerEqual Num Num = True
-typeCheckerEqual Bool Bool = True
-typeCheckerEqual Void Void = True
-typeCheckerEqual _ _ = False
-
 typeIsBool :: Type -> Bool
 typeIsBool Bool = True
 typeIsBool _ = False
@@ -95,6 +89,15 @@ typeCheckerAux (WhileDo b c)
     t1 = typeCheckerAux b
     t2 = typeCheckerAux c
 
+isType :: Type -> Bool
+isType t = typeIsBool t || typeIsNum t || typeIsVoid t
+
+typeChecker :: ASA -> ASA
+typeChecker asa
+  | isType t = asa
+  | otherwise = error "Ocurrió un error en el ASA dado."
+  where
+    t = typeCheckerAux asa
 
 {-
 typeCheckerAux (Not         e) = checkType [e] Bool Bool
