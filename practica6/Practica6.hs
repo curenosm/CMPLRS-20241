@@ -48,48 +48,55 @@ typeCheckerAux (Boolean _) = Bool
 typeCheckerAux Skip = Void
 typeCheckerAux (Sum a1 a2)
   | typeIsNum t1 && typeIsNum t2 = Num
-  | otherwise = error "El tipo de los operandos es incorrecto."
+  | not (typeIsNum t1) = error $ "El tipo de (" ++ show a1 ++ ") no es el esperado."
+  | otherwise = error $ "El tipo de (" ++ show a2 ++ ") no es el esperado."
   where
     t1 = typeCheckerAux a1
     t2 = typeCheckerAux a2
 typeCheckerAux (And b1 b2)
   | typeIsBool t1 && typeIsBool t2 = Bool
-  | otherwise = error "El tipo de los operandos es incorrecto."
+  | not (typeIsBool t1) = error $ "El tipo de (" ++ show b1 ++ ") no es el esperado."
+  | otherwise = error $ "El tipo de (" ++ show b2 ++ ") no es el esperado."
   where
     t1 = typeCheckerAux b1
     t2 = typeCheckerAux b2
 typeCheckerAux (Not b)
   | typeIsBool t = Bool
-  | otherwise = error "El tipo del operando es incorrecto."
+  | otherwise =  error $ "El tipo de (" ++ show b ++ ") no es el esperado."
   where
     t = typeCheckerAux b
 typeCheckerAux (Equal a1 a2)
   | typeIsNum t1 && typeIsNum t2 = Bool
-  | otherwise = error "El tipo de los operandos es incorrecto."
+  | not (typeIsNum t1) = error $ "El tipo de (" ++ show a1 ++ ") no es el esperado."
+  | otherwise = error $ "El tipo de (" ++ show a2 ++ ") no es el esperado."
   where
     t1 = typeCheckerAux a1
     t2 = typeCheckerAux a2
 typeCheckerAux (Assign l a)
   | typeIsNum t = Void
-  | otherwise = error "El tipo de los operandos es incorrecto."
+  | otherwise = error $ "El tipo de (" ++ show a ++ ") no es el esperado."
   where
     t = typeCheckerAux a
 typeCheckerAux (IfThenElse b c1 c2)
   | typeIsBool t1 && typeIsVoid t2 && typeIsVoid t3 = Void
-  | otherwise = error "El tipo de los operandos es incorrecto."
+  | not (typeIsBool t1) = error $ "El tipo de (" ++ show b ++ ") no es el esperado."
+  | not (typeIsVoid t2) = error $ "El tipo de (" ++ show c1 ++ ") no es el esperado."
+  | otherwise = error $ "El tipo de (" ++ show c2 ++ ") no es el esperado."
   where
     t1 = typeCheckerAux b
     t2 = typeCheckerAux c1
     t3 = typeCheckerAux c2
 typeCheckerAux (Seq c1 c2)
   | typeIsVoid t1 && typeIsVoid t2 = Void
-  | otherwise = error "El tipo de los operandos es incorrecto."
+  | not (typeIsVoid t1) = error $ "El tipo de (" ++ show c1 ++ ") no es el esperado."
+  | otherwise = error $ "El tipo de (" ++ show c2 ++ ") no es el esperado."
   where
     t1 = typeCheckerAux c1
     t2 = typeCheckerAux c2
 typeCheckerAux (WhileDo b c)
   | typeIsBool t1 && typeIsVoid t2 = Void
-  | otherwise = error "El tipo de los operandos es incorrecto."
+  | not (typeIsBool t1) = error $ "El tipo de (" ++ show b ++ ") no es el esperado."
+  | otherwise = error $ "El tipo de (" ++ show c ++ ") no es el esperado."
   where
     t1 = typeCheckerAux b
     t2 = typeCheckerAux c
