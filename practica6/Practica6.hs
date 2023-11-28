@@ -21,21 +21,22 @@ data ASA = Assign ASA ASA
 
 data Type = Num | Bool | Void deriving Show
 
-{-checkType :: [ASA] -> Type -> Type -> Type
-checkType xs t res = if all (==t) (map typeCheckerAux xs) then res else error "Not implemented"-}
-
+-- Función auxiliar para verificar si un Type es de tipo Bool.
 typeIsBool :: Type -> Bool
 typeIsBool Bool = True
 typeIsBool _ = False
 
+-- Función auxiliar para verificar si un Type es de tipo Num.
 typeIsNum :: Type -> Bool
 typeIsNum Num = True
 typeIsNum _ = False
 
+-- Función auxiliar para verificar si un Type es de tipo Void.
 typeIsVoid :: Type -> Bool
 typeIsVoid Void = True
 typeIsVoid _ = False
 
+-- Función auxiliar que verifica los tipos de un ASA.
 typeCheckerAux :: ASA -> Type
 typeCheckerAux (Loc _) = Num
 typeCheckerAux (Number _) = Num
@@ -89,9 +90,12 @@ typeCheckerAux (WhileDo b c)
     t1 = typeCheckerAux b
     t2 = typeCheckerAux c
 
+-- Función auxiliar que verifica si un Type es un tipo.
 isType :: Type -> Bool
 isType t = typeIsBool t || typeIsNum t || typeIsVoid t
 
+-- Función principal que dada un ASA, verifica si es un programa admisible, si lo es entonces verifica el tipo del ASA.
+-- Si el tipado es correcto regresa el ASA, en caso contrario se regresa el error de typeCheckerAux.
 typeChecker :: ASA -> ASA
 typeChecker (Assign l a)
   | isType t = (Assign l a)
@@ -125,24 +129,3 @@ typeChecker (Not b) = error "Las operaciones de NOT no son programas válidos en
 typeChecker (Loc l) = error "Las localidades no son programas válidos en el lenguaje."
 typeChecker (Number n) = error "Los números no son programas válidos en el lenguaje."
 typeChecker (Sum a1 a2) = error "Las sumas no son programas válidos en el lenguaje."
-
-
-{-
-typeCheckerAux (Not         e) = checkType [e] Bool Bool
-typeCheckerAux (Assign    l v) = checkType [v] Num Void
-typeCheckerAux (And       l r) = checkType [l, r] Bool Bool
-typeCheckerAux (Equal     l r) = checkType [l, r] Num Bool
-typeCheckerAux (Sum       l r) = checkType [l, r] Num Num
-typeCheckerAux (Seq cur next)  = checkType [cur, next] Void Void
-typeCheckerAux (IfThenElse c body other) = if typeCheckerAux c == Bool
-    then checkType [body, other] Void Void else error "Not implemented"
-typeCheckerAux (WhileDo c body)       = if typeCheckerAux c == Bool
-    then checkType [body] Void Void else error "Not implemented"-}
-
-
-
-{-typeChecker :: ASA -> ASA
-typeChecker asa = if typeCheckerAux asa `elem` [Num, Bool, Void] 
-    then asa 
-    else error "Not implemented"
--}
