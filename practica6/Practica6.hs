@@ -43,18 +43,18 @@ typeIsVoid Void = True
 typeIsVoid _ = False
 
 typeCheckerAux :: ASA -> Type
-typeCheckerAux (Loc _)         = Num
-typeCheckerAux (Number _)      = Num
-typeCheckerAux (Boolean _)     = Bool
-typeCheckerAux Skip          = Void
+typeCheckerAux (Loc _) = Num
+typeCheckerAux (Number _) = Num
+typeCheckerAux (Boolean _) = Bool
+typeCheckerAux Skip = Void
 typeCheckerAux (Sum a1 a2)
-  | typeCheckerEqual t1 t2 && typeIsNum t1 = Num
+  | typeIsNum t1 && typeIsNum t2 = Num
   | otherwise = error "El tipo de los operandos es incorrecto."
   where
     t1 = typeCheckerAux a1
     t2 = typeCheckerAux a2
 typeCheckerAux (And b1 b2)
-  | typeCheckerEqual t1 t2 && typeIsBool t1 = Bool
+  | typeIsBool t1 && typeIsBool t2 = Bool
   | otherwise = error "El tipo de los operandos es incorrecto."
   where
     t1 = typeCheckerAux b1
@@ -65,7 +65,7 @@ typeCheckerAux (Not b)
   where
     t = typeCheckerAux b
 typeCheckerAux (Equal a1 a2)
-  | typeCheckerEqual t1 t2 && typeIsNum t1 = Bool
+  | typeIsNum t1 && typeIsNum t2 = Bool
   | otherwise = error "El tipo de los operandos es incorrecto."
   where
     t1 = typeCheckerAux a1
